@@ -25,7 +25,7 @@ Table of Contents
 
 <!-- MarkdownTOC autolink="true" -->
 
-- [@bahmutov/cy-grep](#bahmutovcy-grep)
+- [@bahmutov/cy-grep ](#bahmutovcy-grep-)
   - [Install](#install)
     - [Support file](#support-file)
     - [Config file](#config-file)
@@ -49,6 +49,7 @@ Table of Contents
   - [TypeScript support](#typescript-support)
   - [General advice](#general-advice)
   - [DevTools console](#devtools-console)
+    - [grepFailed](#grepfailed)
   - [Debugging](#debugging)
     - [Log messages](#log-messages)
     - [Debugging in the plugin](#debugging-in-the-plugin)
@@ -493,6 +494,16 @@ Cypress.grep('hello', '@smoke', 10)
 ```
 
 - to remove the grep strings enter `Cypress.grep()`
+
+### grepFailed
+
+Once the tests finish, you can run just the failed tests from DevTools console
+
+```text
+> Cypress.grepFailed()
+```
+
+**Tip:** use `Cypress.grep()` to reset and run all the tests
 
 ## Debugging
 

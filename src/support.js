@@ -253,4 +253,38 @@ if (!Cypress.grep) {
   }
 }
 
+if (!Cypress.grepFailed) {
+  Cypress.grepFailed = function () {
+    // @ts-ignore
+    let root = Cypress.state('runnable')
+    while (root.parent) {
+      root = root.parent
+    }
+    const failedTestTitles = []
+
+    function findFailedTests(suite) {
+      suite.tests.forEach((test) => {
+        if (test.state === 'failed') {
+          // TODO use the full test title
+          failedTestTitles.push(test.title)
+        }
+      })
+      suite.suites.forEach((suite) => {
+        findFailedTests(suite)
+      })
+    }
+    findFailedTests(root)
+
+    if (!failedTestTitles.length) {
+      console.log('No failed tests found')
+    } else {
+      console.log('running only the failed tests')
+      console.log(failedTestTitles)
+      const grepTitles = failedTestTitles.join(';')
+      // @ts-ignore
+      Cypress.grep(grepTitles)
+    }
+  }
+}
+
 module.exports = cypressGrep
