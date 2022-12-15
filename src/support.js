@@ -4,7 +4,11 @@
 const { parseGrep, shouldTestRun } = require('./utils')
 // @ts-ignore
 const { version } = require('../package.json')
-const debug = require('debug')('@cypress/grep')
+const {
+  getPluginConfigValue,
+  setPluginConfigValue,
+} = require('cypress-plugin-config')
+const debug = require('debug')('@bahmutov/cy-grep')
 
 debug.log = console.info.bind(console)
 
@@ -16,22 +20,26 @@ const _describe = describe
  * Wraps the "it" and "describe" functions that support tags.
  * @see https://github.com/cypress-io/cypress-grep
  */
-function cypressGrep () {
+function cypressGrep() {
   /** @type {string} Part of the test title go grep */
-  let grep = Cypress.env('grep')
+  let grep = getPluginConfigValue('grep')
 
   if (grep) {
     grep = String(grep).trim()
   }
 
   /** @type {string} Raw tags to grep string */
-  const grepTags = Cypress.env('grepTags') || Cypress.env('grep-tags')
+  const grepTags =
+    getPluginConfigValue('grepTags') || getPluginConfigValue('grep-tags')
 
   const burnSpecified =
-    Cypress.env('grepBurn') || Cypress.env('grep-burn') || Cypress.env('burn')
+    getPluginConfigValue('grepBurn') ||
+    getPluginConfigValue('grep-burn') ||
+    getPluginConfigValue('burn')
 
   const grepUntagged =
-    Cypress.env('grepUntagged') || Cypress.env('grep-untagged')
+    getPluginConfigValue('grepUntagged') ||
+    getPluginConfigValue('grep-untagged')
 
   if (!grep && !grepTags && !burnSpecified && !grepUntagged) {
     // nothing to do, the user has no specified the "grep" string
@@ -42,14 +50,15 @@ function cypressGrep () {
 
   /** @type {number} Number of times to repeat each running test */
   const grepBurn =
-    Cypress.env('grepBurn') ||
-    Cypress.env('grep-burn') ||
-    Cypress.env('burn') ||
+    getPluginConfigValue('grepBurn') ||
+    getPluginConfigValue('grep-burn') ||
+    getPluginConfigValue('burn') ||
     1
 
   /** @type {boolean} Omit filtered tests completely */
   const omitFiltered =
-    Cypress.env('grepOmitFiltered') || Cypress.env('grep-omit-filtered')
+    getPluginConfigValue('grepOmitFiltered') ||
+    getPluginConfigValue('grep-omit-filtered')
 
   debug('grep %o', { grep, grepTags, grepBurn, omitFiltered, version })
   if (!Cypress._.isInteger(grepBurn) || grepBurn < 1) {
@@ -68,7 +77,7 @@ function cypressGrep () {
     return
   }
 
-  it = function itGrep (name, options, callback) {
+  it = function itGrep(name, options, callback) {
     if (typeof options === 'function') {
       // the test has format it('...', cb)
       callback = options
@@ -87,13 +96,13 @@ function cypressGrep () {
     }
 
     const nameToGrep = suiteStack
-    .map((item) => item.name)
-    .concat(name)
-    .join(' ')
+      .map((item) => item.name)
+      .concat(name)
+      .join(' ')
     const tagsToGrep = suiteStack
-    .flatMap((item) => item.tags)
-    .concat(configTags)
-    .filter(Boolean)
+      .flatMap((item) => item.tags)
+      .concat(configTags)
+      .filter(Boolean)
 
     const shouldRun = shouldTestRun(
       parsedGrep,
@@ -141,7 +150,7 @@ function cypressGrep () {
   // Thus a test can look up the tags from its parent suites
   const suiteStack = []
 
-  describe = function describeGrep (name, options, callback) {
+  describe = function describeGrep(name, options, callback) {
     if (typeof options === 'function') {
       // the block has format describe('...', cb)
       callback = options
@@ -208,7 +217,7 @@ function cypressGrep () {
   }
 }
 
-function restartTests () {
+function restartTests() {
   setTimeout(() => {
     window.top.document.querySelector('.reporter .restart').click()
   }, 0)
@@ -230,14 +239,14 @@ if (!Cypress.grep) {
    *  Cypress.grep()
    * @see "Grep from DevTools console" https://github.com/cypress-io/cypress-grep#devtools-console
    */
-  Cypress.grep = function grep (grep, tags, burn) {
-    Cypress.env('grep', grep)
-    Cypress.env('grepTags', tags)
-    Cypress.env('grepBurn', burn)
+  Cypress.grep = function grep(grep, tags, burn) {
+    setPluginConfigValue('grep', grep)
+    setPluginConfigValue('grepTags', tags)
+    setPluginConfigValue('grepBurn', burn)
     // remove any aliased values
-    Cypress.env('grep-tags', null)
-    Cypress.env('grep-burn', null)
-    Cypress.env('burn', null)
+    setPluginConfigValue('grep-tags', null)
+    setPluginConfigValue('grep-burn', null)
+    setPluginConfigValue('burn', null)
 
     debug('set new grep to "%o" restarting tests', { grep, tags, burn })
     restartTests()

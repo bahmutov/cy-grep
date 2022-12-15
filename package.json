@@ -8,6 +8,7 @@
     "cy:open": "cypress open --e2e -b electron --config specPattern='**/unit.js'"
   },
   "dependencies": {
+    "cypress-plugin-config": "^1.2.0",
     "debug": "^4.3.2",
     "find-test-names": "^1.22.2",
     "globby": "^11.0.4"
