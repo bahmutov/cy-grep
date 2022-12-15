@@ -5,7 +5,8 @@
   "main": "src/support.js",
   "scripts": {
     "cy:run": "cypress run --config specPattern='**/unit.js'",
-    "cy:open": "cypress open --e2e -b electron --config specPattern='**/unit.js'"
+    "cy:open": "cypress open --e2e -b electron --config specPattern='**/unit.js'",
+    "badges": "npx -p dependency-version-badge update-badge cypress"
   },
   "dependencies": {
     "cypress-plugin-config": "^1.2.0",
