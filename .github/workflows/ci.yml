@@ -11,7 +11,7 @@ jobs:
         # https://github.com/cypress-io/github-action
         uses: cypress-io/github-action@v4
         with:
-          config: specPattern='**/unit.js'
+          config: 'specPattern=**/unit.js'
 
   # TODO: run all e2e tests against the expected results
 
