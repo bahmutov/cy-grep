@@ -6,7 +6,8 @@
   "scripts": {
     "cy:run": "cypress run --config specPattern='**/unit.js'",
     "cy:open": "cypress open --e2e -b electron --config specPattern='**/unit.js'",
-    "badges": "npx -p dependency-version-badge update-badge cypress"
+    "badges": "npx -p dependency-version-badge update-badge cypress",
+    "semantic-release": "semantic-release"
   },
   "dependencies": {
     "cypress-plugin-config": "^1.2.0",
@@ -19,7 +20,8 @@
     "cypress-each": "^1.11.0",
     "cypress-expect": "^2.5.3",
     "prettier": "^2.8.1",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "semantic-release": "^19.0.5"
   },
   "peerDependencies": {
     "cypress": ">=10"
@@ -31,7 +33,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bahmutov/cy-grep.git"
+    "url": "https://github.com/bahmutov/cy-grep.git"
   },
   "homepage": "https://github.com/bahmutov/cy-grep",
   "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
