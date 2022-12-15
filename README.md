@@ -505,6 +505,8 @@ Once the tests finish, you can run just the failed tests from DevTools console
 
 **Tip:** use `Cypress.grep()` to reset and run all the tests
 
+📝 Read the blog post [Run Just The Failed Tests In Cypress](https://glebbahmutov.com/blog/run-failed-tests/).
+
 ## Debugging
 
 When debugging a problem, first make sure you are using the expected version of this plugin, as some features might be only available in the [later releases](https://github.com/cypress-io/cypress-grep/releases).
