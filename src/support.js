@@ -287,4 +287,27 @@ if (!Cypress.grepFailed) {
   }
 }
 
+Cypress.on('test:after:run', (e) => {
+  // hmm, why does the button loses the event handler and it does not process?
+  const controls = window.top?.document.querySelector('header .controls')
+  const rerunFailed = controls?.querySelector('.rerun-failed')
+  if (!rerunFailed) {
+    // setTimeout(() => {
+    console.log('insert rerun failed', e)
+    // controls.after('<span class="rerun-failed">F</span>')
+    const span = window.top?.document.createElement('span')
+    span.innerHTML = `
+        <button title="Rerun failed tests" class="rerun-failed">F</button>
+      `.trim()
+    span?.addEventListener('click', (e) => {
+      console.log('click grep failed')
+      e.stopPropagation()
+      e.preventDefault()
+      Cypress.grepFailed()
+    })
+    controls?.append(span)
+    // }, 100)
+  }
+})
+
 module.exports = cypressGrep

@@ -14,8 +14,8 @@ it('works @tag2', { tags: '@tag2' }, () => {})
 
 // a failed test if needed
 // comment out when done
-// describe('a failing suite', () => {
-//   it('bad test', () => {
-//     expect(false).to.be.true
-//   })
-// })
+describe('a failing suite', () => {
+  it('bad test', () => {
+    expect(false).to.be.true
+  })
+})
