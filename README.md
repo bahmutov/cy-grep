@@ -19,7 +19,7 @@ All other tests will be marked pending, see why in the [Cypress test statuses](h
 
 If you have multiple spec files, all specs will be loaded, and every test will be filtered the same way, since the grep is run-time operation and cannot eliminate the spec files without loading them. If you want to run only specific tests, use the built-in [--spec](https://on.cypress.io/command-line#cypress-run-spec-lt-spec-gt) CLI argument.
 
-Watch the video [intro to cypress-grep plugin](https://www.youtube.com/watch?v=HS-Px-Sghd8)
+Watch the video [intro to cypress-grep plugin](https://www.youtube.com/watch?v=HS-Px-Sghd8) and study my 🎓 Cypress course [Cypress Plugins](https://cypress.tips/courses/cypress-plugins).
 
 Table of Contents
 
@@ -81,7 +81,8 @@ yarn add -D @bahmutov/cy-grep
 **required:** load this module from the [support file](https://on.cypress.io/writing-and-organizing-tests#Support-file) or at the top of the spec file if not using the support file. You import the registration function and then call it:
 
 ```js
-// cypress/support/index.js
+// cypress/support/e2e.js
+
 // load and register the grep feature using "require" function
 // https://github.com/bahmutov/cy-grep
 const registerCypressGrep = require('@bahmutov/cy-grep')
@@ -90,7 +91,7 @@ registerCypressGrep()
 // if you want to use the "import" keyword
 // note: `./index.d.ts` currently extends the global Cypress types and
 // does not define `registerCypressGrep` so the import path is directly
-// pointed to the `support.js` file
+// pointed to the support file
 import registerCypressGrep from '@bahmutov/cy-grep/src/support'
 registerCypressGrep()
 
