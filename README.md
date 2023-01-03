@@ -112,8 +112,9 @@ registerCypressGrep()
   e2e: {
     setupNodeEvents(on, config) {
       require('@bahmutov/cy-grep/src/plugin')(config);
+      // IMPORTANT: return the config object
       return config;
-  },
+    },
   }
 }
 ```
