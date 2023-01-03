@@ -119,7 +119,7 @@ registerCypressGrep()
 }
 ```
 
-Installing the plugin via `setupNodeEvents()` is required to enable the [grepFilterSpecs](#grepfilterspecs) feature.
+Installing the plugin via `setupNodeEvents()` is required to enable the [grepFilterSpecs](#pre-filter-specs-grepfilterspecs) feature.
 
 ## Usage Overview
 
@@ -355,9 +355,12 @@ $ npx cypress run --env grepTags=@smoke,grepFilterSpecs=true
 **Tip:** you can set this environment variable in the [config file](https://docs.cypress.io/guides/references/configuration) file to enable it by default and skip using the environment variable:
 
 ```js
+// config file
 {
-  "env": {
-    "grepFilterSpecs": true
+  "e2e": {
+    "env": {
+      "grepFilterSpecs": true
+    }
   }
 }
 ```
