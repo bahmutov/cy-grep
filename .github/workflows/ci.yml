@@ -25,6 +25,20 @@ jobs:
         with:
           command: npx cypress-expect run --env grepTags=@tag1 --expect-exactly expects/tag1.json
 
+  test-one-spec:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+
+      - name: Run single tag 🧪
+        uses: cypress-io/github-action@v5
+        with:
+          command: npx cypress-expect run \
+            --env grepTags=A,grepFilterSpecs=true,grepOmitFiltered=true \
+            --config specPattern='cypress/e2e/effective-tags/*.js' \
+            --expect-exactly expects/effective-tags/spec-a.json
+
   release:
     needs: [test, test-one-tag]
     runs-on: ubuntu-20.04
