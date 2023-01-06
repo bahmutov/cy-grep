@@ -514,18 +514,19 @@ Once the tests finish, you can run just the failed tests from DevTools console
 
 ## Debugging
 
-When debugging a problem, first make sure you are using the expected version of this plugin, as some features might be only available in the [later releases](https://github.com/cypress-io/cypress-grep/releases).
+When debugging a problem, first make sure you are using the expected version of this plugin, as some features might be only available in the [later releases](https://github.com/bahmutov/cy-grep/releases).
 
 ```
-# get the cypress-grep version using NPM
-$ npm ls cypress-grep
+# get the plugin's version using NPM
+$ npm ls @bahmutov/cy-grep
 ...
-└── cypress-grep@2.10.1
-# get the cypress-grep version using Yarn
-$ yarn why cypress-grep
+└── @bahmutov/cy-grep@1.1.0
+
+# get the plugin's version using Yarn
+$ yarn why @bahmutov/cy-grep
 ...
-=> Found "cypress-grep@2.10.1"
-info Has been hoisted to "cypress-grep"
+=> Found "@bahmutov/cy-grep@1.1.0"
+info Has been hoisted to "@bahmutov/cy-grep"
 info This module exists because it's specified in "devDependencies".
 ...
 ```
