@@ -9,14 +9,54 @@ jobs:
 
       - name: Run Cypress tests 🧪
         # https://github.com/cypress-io/github-action
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v5
         with:
           config: 'specPattern=**/unit.js'
 
   # TODO: run all e2e tests against the expected results
+  test-one-tag:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+
+      - name: Run single tag 🧪
+        uses: cypress-io/github-action@v5
+        with:
+          command: npx cypress-expect run --env grepTags=@tag1 --expect-exactly expects/tag1.json
+
+  test-one-spec-filter:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+
+      - name: Run single tag 🧪
+        uses: cypress-io/github-action@v5
+        with:
+          command: npx cypress-expect run \
+            --env grepTags=A,grepFilterSpecs=true,grepOmitFiltered=true \
+            --config specPattern=cypress/e2e/effective-tags/*.js \
+            --expect-exactly expects/effective-tags/spec-a.json
+
+  # https://github.com/bahmutov/cy-grep/issues/4
+  test-effective-tags-AND-filter:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+
+      - name: Run single tag 🧪
+        uses: cypress-io/github-action@v5
+        with:
+          command: npx cypress-expect run \
+            --env grepTags=A+smoke,grepFilterSpecs=true,grepOmitFiltered=true \
+            --config specPattern=cypress/e2e/effective-tags/*.js \
+            --expect-exactly expects/effective-tags/spec-a-smoke.json
 
   release:
-    needs: [test]
+    needs:
+      [test, test-one-tag, test-one-spec-filter, test-effective-tags-AND-filter]
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/main'
     steps:

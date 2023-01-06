@@ -1,0 +1,6 @@
+{
+  "spec a": {
+    "runs test": "pass",
+    "runs smoke test": "pass"
+  }
+}

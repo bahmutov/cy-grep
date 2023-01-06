@@ -1,6 +1,6 @@
 const debug = require('debug')('cypress-grep')
 const globby = require('globby')
-const { getTestNames } = require('find-test-names')
+const { getTestNames, findEffectiveTestTags } = require('find-test-names')
 const fs = require('fs')
 const { version } = require('../package.json')
 const { parseGrep, shouldTestRun } = require('./utils')
@@ -9,7 +9,7 @@ const { parseGrep, shouldTestRun } = require('./utils')
  * Prints the cypress-grep environment values if any.
  * @param {Cypress.ConfigOptions} config
  */
-function cypressGrepPlugin (config) {
+function cypressGrepPlugin(config) {
   if (!config || !config.env) {
     return config
   }
@@ -117,15 +117,14 @@ function cypressGrepPlugin (config) {
         const text = fs.readFileSync(specFile, { encoding: 'utf8' })
 
         try {
-          const testInfo = getTestNames(text)
-
+          const testTags = findEffectiveTestTags(text)
+          // we get back a single object with keys being full test titles
+          // and the values being arrays of effective test tags
           debug('spec file %s', specFile)
-          debug('test info: %o', testInfo.tests)
-
-          return testInfo.tests.some((info) => {
-            const shouldRun = shouldTestRun(parsedGrep, null, info.tags)
-
-            return shouldRun
+          debug('effective test tags %o', testTags)
+          return Object.keys(testTags).some((testTitle) => {
+            const effectiveTags = testTags[testTitle]
+            return shouldTestRun(parsedGrep, null, effectiveTags)
           })
         } catch (err) {
           console.error('Could not determine test names in file: %s', specFile)
