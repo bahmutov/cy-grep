@@ -118,18 +118,10 @@ function cypressGrepPlugin(config) {
 
         try {
           const testTags = findEffectiveTestTags(text)
-          // const testInfo = getTestNames(text, true)
-          // setEffectiveTags(testInfo.structure)
-
+          // we get back a single object with keys being full test titles
+          // and the values being arrays of effective test tags
           debug('spec file %s', specFile)
-          // debug('test info: %o', testInfo.tests)
           debug('effective test tags %o', testTags)
-
-          // return testInfo.tests.some((info) => {
-          //   const shouldRun = shouldTestRun(parsedGrep, null, info.tags)
-
-          //   return shouldRun
-          // })
           return Object.keys(testTags).some((testTitle) => {
             const effectiveTags = testTags[testTitle]
             return shouldTestRun(parsedGrep, null, effectiveTags)

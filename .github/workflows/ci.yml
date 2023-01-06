@@ -36,7 +36,7 @@ jobs:
         with:
           command: npx cypress-expect run \
             --env grepTags=A,grepFilterSpecs=true,grepOmitFiltered=true \
-            --config specPattern='cypress/e2e/effective-tags/*.js' \
+            --config specPattern=cypress/e2e/effective-tags/*.js \
             --expect-exactly expects/effective-tags/spec-a.json
 
   # https://github.com/bahmutov/cy-grep/issues/4
@@ -51,7 +51,7 @@ jobs:
         with:
           command: npx cypress-expect run \
             --env grepTags=A+smoke,grepFilterSpecs=true,grepOmitFiltered=true \
-            --config specPattern='cypress/e2e/effective-tags/*.js' \
+            --config specPattern=cypress/e2e/effective-tags/*.js \
             --expect-exactly expects/effective-tags/spec-a-smoke.json
 
   release:
