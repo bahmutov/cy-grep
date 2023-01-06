@@ -217,8 +217,6 @@ $ npx cypress run --env grep="-hello world"
 $ npx cypress run --env grep="hello; -world"
 ```
 
-**Note:** Inverted title filter is not compatible with the `grepFilterSpecs` option
-
 ## Filter with tags
 
 You can select tests to run or skip using tags by passing `--env grepTags=...` value.
