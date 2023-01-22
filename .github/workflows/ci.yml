@@ -54,9 +54,28 @@ jobs:
             --config specPattern=cypress/e2e/effective-tags/*.js \
             --expect-exactly expects/effective-tags/spec-a-smoke.json
 
+  test-only-on-tags:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+
+      - name: Run single tag 🧪
+        uses: cypress-io/github-action@v5
+        with:
+          command: npx cypress-expect run \
+            --project tests/only-tags \
+            --expect-exactly ./tests/only-tags/expect.json
+
   release:
     needs:
-      [test, test-one-tag, test-one-spec-filter, test-effective-tags-AND-filter]
+      [
+        test,
+        test-one-tag,
+        test-one-spec-filter,
+        test-effective-tags-AND-filter,
+        test-only-on-tags,
+      ]
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/main'
     steps:
