@@ -56,9 +56,6 @@ Table of Contents
     - [Debugging in the browser](#debugging-in-the-browser)
   - [Examples](#examples)
   - [See also](#see-also)
-  - [Migration guide](#migration-guide)
-    - [from v1 to v2](#from-v1-to-v2)
-    - [from v2 to v3](#from-v2-to-v3)
   - [Small Print](#small-print)
 
 <!-- /MarkdownTOC -->
@@ -545,30 +542,28 @@ This module uses [debug](https://github.com/visionmedia/debug#readme) to log ver
 
 ### Debugging in the plugin
 
-Start Cypress with the environment variable `DEBUG=cypress-grep`. You will see a few messages from this plugin in the terminal output:
+Start Cypress with the environment variable `DEBUG=cy-grep`. You will see a few messages from this plugin in the terminal output:
 
 ```
-$ DEBUG=cypress-grep npx cypress run --env grep=works,grepFilterSpecs=true
-cypress-grep: tests with "works" in their names
-cypress-grep: filtering specs using "works" in the title
-  cypress-grep Cypress config env object: { grep: 'works', grepFilterSpecs: true }
+$ DEBUG=cy-grep npx cypress run --env grep=works,grepFilterSpecs=true
+cy-grep: tests with "works" in their names
+cy-grep: filtering specs using "works" in the title
+  cy-grep Cypress config env object: { grep: 'works', grepFilterSpecs: true }
   ...
-  cypress-grep found 1 spec files +5ms
-  cypress-grep [ 'spec.js' ] +0ms
-  cypress-grep spec file spec.js +5ms
-  cypress-grep suite and test names: [ 'hello world', 'works', 'works 2 @tag1',
+  cy-grep found 1 spec files +5ms
+  cy-grep [ 'spec.js' ] +0ms
+  cy-grep spec file spec.js +5ms
+  cy-grep suite and test names: [ 'hello world', 'works', 'works 2 @tag1',
     'works 2 @tag1 @tag2', 'works @tag2' ] +0ms
-  cypress-grep found "works" in 1 specs +0ms
-  cypress-grep [ 'spec.js' ] +0ms
+  cy-grep found "works" in 1 specs +0ms
+  cy-grep [ 'spec.js' ] +0ms
 ```
 
 ### Debugging in the browser
 
-To enable debug console messages in the browser, from the DevTools console set `localStorage.debug='cypress-grep'` and run the tests again.
+To enable debug console messages in the browser, from the DevTools console set `localStorage.debug='cy-grep'` and run the tests again.
 
-![Debug messages](./images/debug.png)
-
-To see how to debug this plugin, watch the video [Debug cypress-grep Plugin](https://youtu.be/4YMAERddHYA).
+To see how to debug this plugin, watch the video [Debug cypress-grep Plugin](https://youtu.be/4YMAERddHYA) but use the string `cy-grep`
 
 ## Examples
 
@@ -579,37 +574,6 @@ To see how to debug this plugin, watch the video [Debug cypress-grep Plugin](htt
 
 - [cypress-select-tests](https://github.com/bahmutov/cypress-select-tests)
 - [cypress-skip-test](https://github.com/cypress-io/cypress-skip-test)
-
-## Migration guide
-
-### from v1 to v2
-
-In v2 we have separated grepping by part of the title string from tags.
-
-**v1**
-
-```
---env grep="one two"
-```
-
-The above scenario was confusing - did you want to find all tests with title containing "one two" or did you want to run tests tagged `one` or `two`?
-
-**v2**
-
-```
-# enable the tests with string "one two" in their titles
---env grep="one two"
-# enable the tests with tag "one" or "two"
---env grepTags="one two"
-# enable the tests with both tags "one" and "two"
---env grepTags="one+two"
-# enable the tests with "hello" in the title and tag "smoke"
---env grep=hello,grepTags=smoke
-```
-
-### from v2 to v3
-
-Version >= 3 of cypress-grep _only_ supports Cypress >= 10.
 
 ## Small Print
 

@@ -8,7 +8,8 @@ const {
   getPluginConfigValue,
   setPluginConfigValue,
 } = require('cypress-plugin-config')
-const debug = require('debug')('@bahmutov/cy-grep')
+// to debug in the browser, set the "localStorage.debug='cy-grep'"
+const debug = require('debug')('cy-grep')
 
 debug.log = console.info.bind(console)
 
@@ -18,7 +19,7 @@ const _describe = describe
 
 /**
  * Wraps the "it" and "describe" functions that support tags.
- * @see https://github.com/cypress-io/cypress-grep
+ * @see https://github.com/bahmutov/cy-grep
  */
 function cypressGrep() {
   /** @type {string} Part of the test title go grep */
@@ -70,9 +71,8 @@ function cypressGrep() {
   debug('parsed grep %o', parsedGrep)
 
   // prevent multiple registrations
-  // https://github.com/cypress-io/cypress-grep/issues/59
   if (it.name === 'itGrep') {
-    debug('already registered cypress-grep')
+    debug('already registered cy-grep')
 
     return
   }
@@ -205,7 +205,6 @@ function cypressGrep() {
   it.skip = _it.skip
   it.only = _it.only
   // preserve "it.each" method if found
-  // https://github.com/cypress-io/cypress-grep/issues/72
   if (typeof _it.each === 'function') {
     it.each = _it.each
   }
@@ -237,7 +236,6 @@ if (!Cypress.grep) {
    *  // remove all current grep settings
    *  // and run all tests
    *  Cypress.grep()
-   * @see "Grep from DevTools console" https://github.com/cypress-io/cypress-grep#devtools-console
    */
   Cypress.grep = function grep(grep, tags, burn) {
     setPluginConfigValue('grep', grep)
