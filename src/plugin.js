@@ -123,7 +123,7 @@ function cypressGrepPlugin(config) {
           debug('spec file %s', specFile)
           debug('effective test tags %o', testTags)
           return Object.keys(testTags).some((testTitle) => {
-            const effectiveTags = testTags[testTitle]
+            const effectiveTags = testTags[testTitle].effectiveTags
             return shouldTestRun(parsedGrep, null, effectiveTags)
           })
         } catch (err) {
