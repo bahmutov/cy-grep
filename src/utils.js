@@ -7,7 +7,7 @@
  * The string can have "-" in front of it to invert the match.
  * @param {string} s Input substring of the test title
  */
-function parseTitleGrep (s) {
+function parseTitleGrep(s) {
   if (!s || typeof s !== 'string') {
     return null
   }
@@ -26,7 +26,7 @@ function parseTitleGrep (s) {
   }
 }
 
-function parseFullTitleGrep (s) {
+function parseFullTitleGrep(s) {
   if (!s || typeof s !== 'string') {
     return []
   }
@@ -39,7 +39,7 @@ function parseFullTitleGrep (s) {
  * Parses tags to grep for.
  * @param {string} s Tags string like "@tag1+@tag2"
  */
-function parseTagsGrep (s) {
+function parseTagsGrep(s) {
   if (!s) {
     return []
   }
@@ -48,36 +48,36 @@ function parseTagsGrep (s) {
 
   // top level split - using space or comma, each part is OR
   const ORS = s
-  .split(/[ ,]/)
-  // remove any empty tags
-  .filter(Boolean)
-  .map((part) => {
-    // now every part is an AND
-    if (part.startsWith('--')) {
-      explicitNotTags.push({
-        tag: part.slice(2),
-        invert: true,
+    .split(/[ ,]/)
+    // remove any empty tags
+    .filter(Boolean)
+    .map((part) => {
+      // now every part is an AND
+      if (part.startsWith('--')) {
+        explicitNotTags.push({
+          tag: part.slice(2),
+          invert: true,
+        })
+
+        return
+      }
+
+      const parsed = part.split('+').map((tag) => {
+        if (tag.startsWith('-')) {
+          return {
+            tag: tag.slice(1),
+            invert: true,
+          }
+        }
+
+        return {
+          tag,
+          invert: false,
+        }
       })
 
-      return
-    }
-
-    const parsed = part.split('+').map((tag) => {
-      if (tag.startsWith('-')) {
-        return {
-          tag: tag.slice(1),
-          invert: true,
-        }
-      }
-
-      return {
-        tag,
-        invert: false,
-      }
+      return parsed
     })
-
-    return parsed
-  })
 
   // filter out undefined from explicit not tags
   const ORS_filtered = ORS.filter((x) => x !== undefined)
@@ -88,14 +88,29 @@ function parseTagsGrep (s) {
     })
 
     if (ORS_filtered.length === 0) {
-      ORS_filtered[ 0 ] = explicitNotTags
+      ORS_filtered[0] = explicitNotTags
     }
   }
 
   return ORS_filtered
 }
 
-function shouldTestRunTags (parsedGrepTags, tags = []) {
+function shouldTestRunRequiredTags(parsedGrepTags, requiredTags = []) {
+  if (!requiredTags.length) {
+    // there are no tags to check
+    return true
+  }
+
+  return requiredTags.every((onlyTag) => {
+    return parsedGrepTags.some((orPart) => {
+      return orPart.some((p) => {
+        return !p.invert && p.tag === onlyTag
+      })
+    })
+  })
+}
+
+function shouldTestRunTags(parsedGrepTags, tags = []) {
   if (!parsedGrepTags.length) {
     // there are no parsed tags to search for, the test should run
     return true
@@ -121,7 +136,7 @@ function shouldTestRunTags (parsedGrepTags, tags = []) {
   return onePartMatched
 }
 
-function shouldTestRunTitle (parsedGrep, testName) {
+function shouldTestRunTitle(parsedGrep, testName) {
   if (!testName) {
     // if there is no title, let it run
     return true
@@ -152,7 +167,20 @@ function shouldTestRunTitle (parsedGrep, testName) {
 }
 
 // note: tags take precedence over the test name
-function shouldTestRun (parsedGrep, testName, tags = [], grepUntagged = false) {
+/**
+ * Returns boolean if the test with the given name and effective tags
+ * should run, given the runtime grep (parsed) structure.
+ * @param {string|undefined} testName The full test title
+ * @param {string[]} tags The effective test tags
+ * @param {string[]} requiredTags The effective "required" test tags
+ */
+function shouldTestRun(
+  parsedGrep,
+  testName,
+  tags = [],
+  grepUntagged = false,
+  requiredTags = [],
+) {
   if (grepUntagged) {
     return !tags.length
   }
@@ -163,13 +191,16 @@ function shouldTestRun (parsedGrep, testName, tags = [], grepUntagged = false) {
     testName = undefined
   }
 
+  const combinedTagsAndRequiredTags = [...tags, ...requiredTags]
+
   return (
     shouldTestRunTitle(parsedGrep.title, testName) &&
-    shouldTestRunTags(parsedGrep.tags, tags)
+    shouldTestRunTags(parsedGrep.tags, combinedTagsAndRequiredTags) &&
+    shouldTestRunRequiredTags(parsedGrep.tags, requiredTags)
   )
 }
 
-function parseGrep (titlePart, tags) {
+function parseGrep(titlePart, tags) {
   return {
     title: parseFullTitleGrep(titlePart),
     tags: parseTagsGrep(tags),
@@ -183,5 +214,6 @@ module.exports = {
   parseTagsGrep,
   shouldTestRun,
   shouldTestRunTags,
+  shouldTestRunRequiredTags,
   shouldTestRunTitle,
 }
