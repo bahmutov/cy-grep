@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+// @ts-check
 
 import {
   parseGrep,
@@ -7,6 +8,7 @@ import {
   parseTagsGrep,
   shouldTestRun,
   shouldTestRunTags,
+  shouldTestRunRequiredTags,
   shouldTestRunTitle,
 } from '../../src/utils'
 
@@ -174,7 +176,10 @@ describe('utils', () => {
       const parsed = parseTagsGrep('--@tag1,--@tag2')
 
       expect(parsed).to.deep.equal([
-        [{ tag: '@tag1', invert: true }, { tag: '@tag2', invert: true }],
+        [
+          { tag: '@tag1', invert: true },
+          { tag: '@tag2', invert: true },
+        ],
       ])
     })
   })
@@ -325,6 +330,109 @@ describe('utils', () => {
     })
   })
 
+  context('shouldTestRunRequiredTags', () => {
+    const shouldIt = (used, requiredTags, expected) => {
+      const parsedTags = parseTagsGrep(used)
+
+      expect(
+        shouldTestRunRequiredTags(parsedTags, requiredTags),
+        `"${used}" against only "${requiredTags}"`,
+      ).to.equal(expected)
+    }
+
+    it('tags is included', () => {
+      shouldIt('smoke', ['smoke'], true)
+      shouldIt('nice smoke', ['smoke'], true)
+      shouldIt('all different tags and smoke', ['smoke'], true)
+    })
+
+    it('two tags are both listed', () => {
+      shouldIt('two one', ['one', 'two'], true)
+    })
+
+    it('has no only tags', () => {
+      shouldIt('nice smoke', [], true)
+    })
+
+    it('tag is not listed', () => {
+      shouldIt('nope', ['smoke'], false)
+      shouldIt('all different tags', ['smoke'], false)
+    })
+
+    it('one of two needed flags', () => {
+      // the test needs both "one" and "two" to run
+      shouldIt('smoke one', ['one', 'two'], false)
+      shouldIt('smoke two', ['one', 'two'], false)
+    })
+  })
+
+  context('combination of tags and required tags', () => {
+    const checkName = (grep, grepTags) => {
+      const parsed = parseGrep(grep, grepTags)
+
+      expect(parsed).to.be.an('object')
+
+      return (testName, testTags = [], requiredTags = []) => {
+        expect(testName, 'test title').to.be.a('string')
+        expect(testTags, 'test tags').to.be.an('array')
+
+        return shouldTestRun(parsed, testName, testTags, false, requiredTags)
+      }
+    }
+
+    it('simple tags', () => {
+      // command line grep tags
+      const t = checkName(null, 'tag1')
+
+      // test information (title, tags, requiredTags)
+      expect(t('my test', ['tag1'])).to.be.true
+      expect(t('my test', ['tag2'])).to.be.false
+    })
+
+    it('tags plus requiredTags prevent run', () => {
+      // command line grep tags
+      const t = checkName(null, 'tag1')
+
+      // test information (title, tags, requiredTags)
+      expect(t('my test', ['tag1'])).to.be.true
+      // if the test specified "requiredTags" to require only1
+      expect(t('my test', ['tag1'], ['only1'])).to.be.false
+    })
+
+    it('tags plus requiredTags allow run', () => {
+      // command line grep tags
+      const t = checkName(null, 'tag1 only1')
+
+      expect(t('my test', ['tag1'])).to.be.true
+      // the test tagged tag1 and requiring only1 tag
+      // will run when the user passes "only1"
+      expect(t('my test', ['tag1'], ['only1'])).to.be.true
+    })
+
+    it('empty tags plus requiredTags allow run', () => {
+      // command line grep tags
+      const t = checkName(null, 'only1')
+
+      expect(t('my test', ['tag1'])).to.be.false
+      expect(t('my test', ['tag1'], [])).to.be.false
+      // the test tagged tag1 and requiring only1 tag
+      // will run when the user passes "only1"
+      expect(t('my test', [], ['only1'])).to.be.true
+      expect(t('my test', ['tag1'], ['only1'])).to.be.true
+    })
+
+    it('several only tags', () => {
+      // command line grep tags
+      const t = checkName(null, 'only1 only2')
+
+      expect(t('my test', ['tag1'])).to.be.false
+      expect(t('my test', ['tag1'], [])).to.be.false
+      expect(t('my test', [], ['only1'])).to.be.true
+      expect(t('my test', [], ['only2'])).to.be.true
+      expect(t('my test', ['tag1'], ['only2', 'only1'])).to.be.true
+    })
+  })
+
   context('shouldTestRun', () => {
     // a little utility function to parse the given grep string
     // and apply the first argument in shouldTestRun
@@ -379,7 +487,7 @@ describe('utils', () => {
       expect(t('has only @tag1 in the name', ['@tag1'])).to.be.true
       expect(t('has only @tag2 in the name', ['@tag2'])).to.be.true
       expect(t('has @tag1 and @tag2 in the name', ['@tag1', '@tag2'])).to.be
-      .true
+        .true
     })
 
     it('OR with AND option', () => {
@@ -389,7 +497,7 @@ describe('utils', () => {
       expect(t('has only @tag1 in the name', ['@tag1'])).to.be.true
       expect(t('has only @tag2 in the name', ['@tag2'])).to.be.false
       expect(t('has only @tag2 in the name and also @tag3', ['@tag2', '@tag3']))
-      .to.be.true
+        .to.be.true
 
       expect(
         t('has @tag1 and @tag2 and @tag3 in the name', [
@@ -404,7 +512,7 @@ describe('utils', () => {
       const t = checkName('-name;-hey;number')
 
       expect(t('number should only be matches without a n-a-m-e')).to.be.true
-      expect(t('number can\'t be name')).to.be.false
+      expect(t("number can't be name")).to.be.false
       expect(t('The man needs a name')).to.be.false
       expect(t('number hey name')).to.be.false
       expect(t('numbers hey name')).to.be.false
@@ -415,8 +523,8 @@ describe('utils', () => {
     it('Only inverted strings', () => {
       const t = checkName('-name;-hey')
 
-      expect(t('I\'m matched')).to.be.true
-      expect(t('hey! I\'m not')).to.be.false
+      expect(t("I'm matched")).to.be.true
+      expect(t("hey! I'm not")).to.be.false
       expect(t('My name is weird')).to.be.false
     })
   })
