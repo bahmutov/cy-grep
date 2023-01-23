@@ -1,4 +1,4 @@
 {
-  "runs always": "skip",
+  "runs always": "pending",
   "runs only when tag \"special\" is on": "pass"
 }
