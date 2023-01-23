@@ -66,15 +66,17 @@ jobs:
           runTests: false
 
       - name: running the tests without the required tag
-        run: npx cypress-expect run \
-          --project tests/required-tags \
-          --expect-exactly ./tests/required-tags/expect.json \
+        run: |
+          npx cypress-expect run \
+            --project tests/required-tags \
+            --expect-exactly ./tests/required-tags/expect.json
 
       - name: running the tests WITH the required tag
-        run: npx cypress-expect run \
-          --project tests/required-tags \
-          --env grepTags=@special \
-          --expect-exactly ./tests/required-tags/expect-with-required-tag.json
+        run: |
+          npx cypress-expect run \
+            --project tests/required-tags \
+            --env grepTags=@special \
+            --expect-exactly ./tests/required-tags/expect-with-required-tag.json
 
   release:
     needs:
