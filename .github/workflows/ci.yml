@@ -63,9 +63,17 @@ jobs:
       - name: Run single tag 🧪
         uses: cypress-io/github-action@v5
         with:
-          command: npx cypress-expect run \
+          command: |
+            # running the tests without the required tag
+            npx cypress-expect run \
             --project tests/required-tags \
-            --expect-exactly ./tests/required-tags/expect.json
+            --expect-exactly ./tests/required-tags/expect.json \
+            #
+            # running the tests WITH the required tag
+            npx cypress-expect run \
+            --project tests/required-tags \
+            --env grepTags=@special \
+            --expect-exactly ./tests/required-tags/expect-with-required-tag.json
 
   release:
     needs:

@@ -1,0 +1,4 @@
+{
+  "runs always": "skip",
+  "runs only when tag \"special\" is on": "pass"
+}
