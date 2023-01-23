@@ -21,7 +21,7 @@ const _describe = describe
  * Wraps the "it" and "describe" functions that support tags.
  * @see https://github.com/bahmutov/cy-grep
  */
-function cypressGrep() {
+function registerCyGrep() {
   /** @type {string} Part of the test title go grep */
   let grep = getPluginConfigValue('grep')
 
@@ -42,12 +42,12 @@ function cypressGrep() {
     getPluginConfigValue('grepUntagged') ||
     getPluginConfigValue('grep-untagged')
 
-  if (!grep && !grepTags && !burnSpecified && !grepUntagged) {
-    // nothing to do, the user has no specified the "grep" string
-    debug('Nothing to grep, version %s', version)
+  // if (!grep && !grepTags && !burnSpecified && !grepUntagged) {
+  // nothing to do, the user has no specified the "grep" string
+  // debug('Nothing to grep, version %s', version)
 
-    return
-  }
+  // return
+  // }
 
   /** @type {number} Number of times to repeat each running test */
   const grepBurn =
@@ -90,32 +90,41 @@ function cypressGrep() {
     }
 
     let configTags = options && options.tags
-
     if (typeof configTags === 'string') {
       configTags = [configTags]
+    }
+    let configRequiredTags = options && options.requiredTags
+    if (typeof configRequiredTags === 'string') {
+      configRequiredTags = [configRequiredTags]
     }
 
     const nameToGrep = suiteStack
       .map((item) => item.name)
       .concat(name)
       .join(' ')
-    const tagsToGrep = suiteStack
+    const effectiveTestTags = suiteStack
       .flatMap((item) => item.tags)
       .concat(configTags)
       .filter(Boolean)
+    const requiredTestTags = suiteStack
+      .flatMap((item) => item.requiredTags)
+      .concat(configRequiredTags)
+      .filter(Boolean)
+    // console.log({ nameToGrep, effectiveTestTags, requiredTestTags })
 
     const shouldRun = shouldTestRun(
       parsedGrep,
       nameToGrep,
-      tagsToGrep,
+      effectiveTestTags,
       grepUntagged,
+      requiredTestTags,
     )
 
-    if (tagsToGrep && tagsToGrep.length) {
+    if (effectiveTestTags && effectiveTestTags.length) {
       debug(
         'should test "%s" with tags %s run? %s',
         name,
-        tagsToGrep.join(','),
+        effectiveTestTags.join(','),
         shouldRun,
       )
     } else {
@@ -171,7 +180,6 @@ function cypressGrep() {
     }
 
     let configTags = options && options.tags
-
     if (typeof configTags === 'string') {
       configTags = [configTags]
     }
@@ -285,4 +293,4 @@ if (!Cypress.grepFailed) {
   }
 }
 
-module.exports = cypressGrep
+module.exports = registerCyGrep
