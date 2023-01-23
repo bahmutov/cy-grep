@@ -46,6 +46,7 @@ Table of Contents
   - [Omit filtered tests (grepOmitFiltered)](#omit-filtered-tests-grepomitfiltered)
   - [Disable grep](#disable-grep)
   - [Burn (repeat) tests](#burn-repeat-tests)
+  - [Required tags](#required-tags)
   - [TypeScript support](#typescript-support)
   - [General advice](#general-advice)
   - [DevTools console](#devtools-console)
@@ -409,6 +410,16 @@ npx cypress run --env grep="hello world",burn=5
 You can pass the number of times to run the tests via environment name `burn` or `grepBurn` or `grep-burn`. Note, if a lot of tests match the grep and grep tags, a lot of tests will be burnt!
 
 If you do not specify the "grep" or "grep tags" option, the "burn" will repeat _every_ test.
+
+## Required tags
+
+Sometimes you might want to run a test or a suite of tests _only_ if a specific tag or tags are present. For example, you might have a test that cleans the data. This test is meant to run nightly, not on every test run. Thus you can set a `required` tag:
+
+```js
+it('cleans up the data', { requiredTags: '@nightly' }, () => {...})
+```
+
+When you run the tests now, this test will be skipped, as if it were `it.skip`. It will only run if you use the tag `@nightly`, for example: `npx cypress run --env grepTags=@nightly`.
 
 ## TypeScript support
 
