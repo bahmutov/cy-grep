@@ -119,6 +119,15 @@ registerCypressGrep()
 
 Installing the plugin via `setupNodeEvents()` is required to enable the [grepFilterSpecs](#pre-filter-specs-grepfilterspecs) feature.
 
+**Tip:** you probably want to set these `env` settings in your config file
+
+```js
+module.exports = defineConfig({
+  env: { grepFilterSpecs: true, grepOmitFiltered: true },
+  ...
+})
+```
+
 ## Usage Overview
 
 You can filter tests to run using part of their title via `grep`, and via explicit tags via `grepTags` Cypress environment variables.

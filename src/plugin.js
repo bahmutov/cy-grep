@@ -124,7 +124,14 @@ function cypressGrepPlugin(config) {
           debug('effective test tags %o', testTags)
           return Object.keys(testTags).some((testTitle) => {
             const effectiveTags = testTags[testTitle].effectiveTags
-            return shouldTestRun(parsedGrep, null, effectiveTags)
+            const requiredTags = testTags[testTitle].requiredTags
+            return shouldTestRun(
+              parsedGrep,
+              null,
+              effectiveTags,
+              false,
+              requiredTags,
+            )
           })
         } catch (err) {
           console.error('Could not determine test names in file: %s', specFile)
