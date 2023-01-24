@@ -430,6 +430,8 @@ it('cleans up the data', { requiredTags: '@nightly' }, () => {...})
 
 When you run the tests now, this test will be skipped, as if it were `it.skip`. It will only run if you use the tag `@nightly`, for example: `npx cypress run --env grepTags=@nightly`.
 
+Read the blog post 📝 [Required Tags](https://glebbahmutov.com/blog/required-tags/).
+
 ## TypeScript support
 
 Because the Cypress test config object type definition does not have the `tags` property we are using above, the TypeScript linter will show an error. Just add an ignore comment above the test:
