@@ -92,9 +92,10 @@ jobs:
       - name: running the tests WITH the scrape required tag
         # TODO: add expected test statuses
         run: |
-          npx cypress run \
+          npx cypress-expect run \
             --project tests/required-tags-only \
-            --env grepTags=@scrape
+            --env grepTags=@scrape \
+            --expect-exactly ./tests/required-tags-only/expect-scrape.json
 
   release:
     needs:

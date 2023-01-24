@@ -1,4 +1,4 @@
-/// <reference types="@bahmutov/cy-grep" />
+/// <reference path="../../../src/index.d.ts" />
 
 describe('scrape', () => {
   it('scrapes the blog', { requiredTags: '@scrape' }, () => {

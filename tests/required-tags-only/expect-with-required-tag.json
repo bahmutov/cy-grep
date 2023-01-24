@@ -1,4 +1,0 @@
-{
-  "runs always": "pending",
-  "runs only when tag \"special\" is on": "pass"
-}
