@@ -1,5 +1,9 @@
 {
-  "scrape": {
-    "scrapes the blog": "pass"
+  "e2e": {
+    "scrape.cy.js": {
+      "scrape": {
+        "scrapes the blog": "pass"
+      }
+    }
   }
 }
