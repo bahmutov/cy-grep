@@ -1,4 +1,8 @@
 {
-  "runs always": "pass",
-  "runs only when tag \"special\" is on": "pending"
+  "e2e": {
+    "spec.cy.js": {
+      "runs always": "pass",
+      "runs only when tag \"special\" is on": "pending"
+    }
+  }
 }
