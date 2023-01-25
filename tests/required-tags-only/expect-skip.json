@@ -1,0 +1,16 @@
+{
+  "e2e": {
+    "spec-a.cy.js": {
+      "spec A": {
+        "works": "pass",
+        "works some more": "pass"
+      }
+    },
+    "spec-b.cy.js": {
+      "spec B": {
+        "works": "pass",
+        "works some more": "pass"
+      }
+    }
+  }
+}

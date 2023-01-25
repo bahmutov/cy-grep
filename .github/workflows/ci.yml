@@ -89,8 +89,13 @@ jobs:
         with:
           runTests: false
 
+      - name: skips specs with required tags
+        run: |
+          npx cypress-expect run \
+            --project tests/required-tags-only \
+            --expect-exactly ./tests/required-tags-only/expect-skip.json
+
       - name: running the tests WITH the scrape required tag
-        # TODO: add expected test statuses
         run: |
           npx cypress-expect run \
             --project tests/required-tags-only \
