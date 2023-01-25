@@ -8,8 +8,8 @@ module.exports = defineConfig({
       require('../../src/plugin')(config)
       return config
     },
-    supportFile: false,
     specPattern: 'e2e/*.cy.js',
+    supportFile: './support/e2e.js',
   },
   fixturesFolder: false,
   video: false,
