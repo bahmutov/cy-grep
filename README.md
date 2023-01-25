@@ -430,6 +430,8 @@ it('cleans up the data', { requiredTags: '@nightly' }, () => {...})
 
 When you run the tests now, this test will be skipped, as if it were `it.skip`. It will only run if you use the tag `@nightly`, for example: `npx cypress run --env grepTags=@nightly`.
 
+If `grepFilterSpecs=true` and a spec has only required tags, and you are running without any tags, the the spec will be skipped completely.
+
 Read the blog post 📝 [Required Tags](https://glebbahmutov.com/blog/required-tags/).
 
 ## TypeScript support

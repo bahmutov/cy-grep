@@ -143,6 +143,33 @@ function cypressGrepPlugin(config) {
 
       debug('found grep tags "%s" in %d specs', grepTags, greppedSpecs.length)
       debug('%o', greppedSpecs)
+    } else {
+      // we have no tags to grep
+      debug('will try eliminating specs with required tags')
+
+      greppedSpecs = specFiles.filter((specFile) => {
+        const text = fs.readFileSync(specFile, { encoding: 'utf8' })
+
+        try {
+          const testTags = findEffectiveTestTags(text)
+          debug('spec file %s', specFile)
+          debug('effective test tags %o', testTags)
+          // eliminate all tests with required tags, since we have no tags right now
+          const testsWithoutRequiredTags = Object.keys(testTags).filter(
+            (testTitle) => {
+              return testTags[testTitle].requiredTags.length === 0
+            },
+          )
+          // if there are any tests remaining, we should run this spec
+          // (we should not run empty specs where all tests have required tags)
+          return testsWithoutRequiredTags.length
+        } catch (err) {
+          console.error('Could not determine test names in file: %s', specFile)
+          console.error('Will run it to let the grep filter the tests')
+
+          return true
+        }
+      })
     }
 
     if (greppedSpecs.length) {
