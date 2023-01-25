@@ -1,5 +1,13 @@
 {
-  "spec a": {
-    "runs smoke test": "pass"
+  "cypress": {
+    "e2e": {
+      "effective-tags": {
+        "spec-a.js": {
+          "spec a": {
+            "runs smoke test": "pass"
+          }
+        }
+      }
+    }
   }
 }
