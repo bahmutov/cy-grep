@@ -104,6 +104,24 @@ jobs:
             --env grepTags=@scrape \
             --expect-exactly ./tests/required-tags-only/expect-scrape.json
 
+  test-required-tags-parent-suite:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+
+      - name: Install Cypress 🧪
+        uses: cypress-io/github-action@v5
+        with:
+          runTests: false
+
+      - name: running the tests WITH the scrape required tag
+        run: |
+          npx cypress-expect run \
+            --project tests/required-tags-suite \
+            --env grepTags=@scrape \
+            --expect-exactly ./tests/required-tags-suite/expect-scrape.json
+
   release:
     needs:
       [
@@ -113,6 +131,7 @@ jobs:
         test-effective-tags-AND-filter,
         test-required-tags,
         test-required-tags-only,
+        test-required-tags-parent-suite,
       ]
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/main'

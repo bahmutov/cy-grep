@@ -1,0 +1,10 @@
+{
+  "e2e": {
+    "scrape.cy.js": {
+      "scrape": {
+        "scrapes the blog 1": "pass",
+        "scrapes the blog 2": "pass"
+      }
+    }
+  }
+}
