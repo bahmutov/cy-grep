@@ -12,7 +12,7 @@
   "dependencies": {
     "cypress-plugin-config": "^1.2.0",
     "debug": "^4.3.2",
-    "find-test-names": "1.25.1",
+    "find-test-names": "1.26.0",
     "globby": "^11.0.4"
   },
   "devDependencies": {

@@ -110,7 +110,7 @@ function registerCyGrep() {
       .flatMap((item) => item.requiredTags)
       .concat(configRequiredTags)
       .filter(Boolean)
-    // console.log({ nameToGrep, effectiveTestTags, requiredTestTags })
+    debug({ nameToGrep, effectiveTestTags, requiredTestTags })
 
     const shouldRun = shouldTestRun(
       parsedGrep,
@@ -128,7 +128,7 @@ function registerCyGrep() {
         shouldRun,
       )
     } else {
-      debug('should test "%s" run? %s', nameToGrep, shouldRun)
+      debug('should test without tags "%s" run? %s', nameToGrep, shouldRun)
     }
 
     if (shouldRun) {
@@ -183,20 +183,29 @@ function registerCyGrep() {
     if (typeof configTags === 'string') {
       configTags = [configTags]
     }
+    let requiredTags = options && options.requiredTags
+    if (typeof requiredTags === 'string') {
+      requiredTags = [requiredTags]
+    }
 
     if (!configTags || !configTags.length) {
-      // if the describe suite does not have explicit tags
-      // move on, since the tests inside can have their own tags
-      _describe(name, options, callback)
-      suiteStack.pop()
+      if (!requiredTags || !requiredTags.length) {
+        // if the describe suite does not have explicit tags
+        // move on, since the tests inside can have their own tags
+        _describe(name, options, callback)
+        suiteStack.pop()
 
-      return
+        return
+      }
     }
 
     // when looking at the suite of the tests, I found
     // that using the name is quickly becoming very confusing
     // and thus we need to use the explicit tags
     stackItem.tags = configTags
+    stackItem.requiredTags = requiredTags
+    debug('stack item', stackItem)
+
     _describe(name, options, callback)
     suiteStack.pop()
 
