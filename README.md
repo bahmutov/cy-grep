@@ -19,13 +19,25 @@ All other tests will be marked pending, see why in the [Cypress test statuses](h
 
 If you have multiple spec files, all specs will be loaded, and every test will be filtered the same way, since the grep is run-time operation and cannot eliminate the spec files without loading them. If you want to run only specific tests, use the built-in [--spec](https://on.cypress.io/command-line#cypress-run-spec-lt-spec-gt) CLI argument.
 
-Watch the video [intro to cypress-grep plugin](https://www.youtube.com/watch?v=HS-Px-Sghd8) and study my 🎓 Cypress course [Cypress Plugins](https://cypress.tips/courses/cypress-plugins).
+## Training
 
-Table of Contents
+Watch the video [intro to cypress-grep plugin](https://www.youtube.com/watch?v=HS-Px-Sghd8) and study my 🎓 Cypress course [Cypress Plugins](https://cypress.tips/courses/cypress-plugins):
+
+- [Lesson k1: Set up the test grep plugin](https://cypress.tips/courses/cypress-plugins/lessons/k1)
+- [Lesson k2: Filter the tests using test and suite tags](https://cypress.tips/courses/cypress-plugins/lessons/k2)
+- [Lesson k3: Filter the specs without the tag we want to run](https://cypress.tips/courses/cypress-plugins/lessons/k3)
+- [Lesson k4: Filter the tests to run using several tags](https://cypress.tips/courses/cypress-plugins/lessons/k4)
+- [Lesson k5: Filter the tests to run using OR of several tags](https://cypress.tips/courses/cypress-plugins/lessons/k5)
+- [Lesson k6: Repeat selected tests N times](https://cypress.tips/courses/cypress-plugins/lessons/k6)
+- [Lesson k7: Pick the tests to run in the interactive mode](https://cypress.tips/courses/cypress-plugins/lessons/k7)
+
+## Table of Contents
 
 <!-- MarkdownTOC autolink="true" -->
 
 - [@bahmutov/cy-grep ](#bahmutovcy-grep-)
+  - [Training](#training)
+  - [Table of Contents](#table-of-contents)
   - [Install](#install)
     - [Support file](#support-file)
     - [Config file](#config-file)
