@@ -12,8 +12,10 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           config: 'specPattern=**/unit.js'
+
       - name: check dependencies 📦
-        run: npm audit --report
+        # only confirm the prod dependencies are good
+        run: npm audit --report --omit dev
 
   # TODO: run all e2e tests against the expected results
   test-one-tag:
