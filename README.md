@@ -41,6 +41,7 @@ Watch the video [intro to cypress-grep plugin](https://www.youtube.com/watch?v=H
   - [Install](#install)
     - [Support file](#support-file)
     - [Config file](#config-file)
+    - [Install in Cypress versions before 10](#install-in-cypress-versions-before-10)
   - [Usage Overview](#usage-overview)
   - [Filter by test title](#filter-by-test-title)
     - [OR substring matching](#or-substring-matching)
@@ -138,6 +139,37 @@ module.exports = defineConfig({
   env: { grepFilterSpecs: true, grepOmitFiltered: true },
   ...
 })
+```
+
+### Install in Cypress versions before 10
+
+See [test-cy-v9](./test-cy-v9/) for example
+
+```js
+// cypress/plugins/index.js
+module.exports = (on, config) => {
+  // `on` is used to hook into various events Cypress emits
+  // `config` is the resolved Cypress config
+  require('@bahmutov/cy-grep/src/plugin')(config)
+  // IMPORTANT: return the config object
+  return config
+}
+```
+
+```js
+// cypress/support/index.js
+require('@bahmutov/cy-grep')()
+```
+
+Put the common settings into `cypress.json`
+
+```json
+{
+  "env": {
+    "grepOmitFiltered": true,
+    "grepFilterSpecs": true
+  }
+}
 ```
 
 ## Usage Overview
