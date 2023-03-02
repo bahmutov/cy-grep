@@ -159,6 +159,32 @@ jobs:
         run: npm run test-expects-both
         working-directory: ./test-cy-v9
 
+  test-cypress-v9-required-tags:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+
+      - name: Install dependencies 🧪
+        uses: cypress-io/github-action@v5
+        with:
+          runTests: false
+
+      - name: Install Cypress v9 dependencies 🧪
+        uses: cypress-io/github-action@v5
+        with:
+          working-directory: ./test-cy-v9-required-tags
+          cache-key: cy-v9-${{ hashFiles('package-lock.json') }}
+          runTests: false
+
+      - name: Grep required test tags in Cypress v9 folder
+        run: npm run test-test-required-tag-test
+        working-directory: ./test-cy-v9-required-tags
+
+      - name: Grep required suite tags in Cypress v9 folder
+        run: npm run test-required-tag-suite
+        working-directory: ./test-cy-v9-required-tags
+
   release:
     needs:
       [
@@ -171,6 +197,7 @@ jobs:
         test-required-tags-only,
         test-required-tags-parent-suite,
         test-cypress-v9,
+        test-cypress-v9-required-tags,
       ]
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/main'
