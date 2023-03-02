@@ -1,3 +1,4 @@
+// @ts-check
 const debug = require('debug')('cy-grep')
 const globby = require('globby')
 const { getTestNames, findEffectiveTestTags } = require('find-test-names')
@@ -5,15 +6,7 @@ const fs = require('fs')
 const { version } = require('../package.json')
 const { parseGrep, shouldTestRun } = require('./utils')
 
-/**
- * Prints the cy-grep environment values if any.
- * @param {Cypress.ConfigOptions} config
- */
-function cypressGrepPlugin(config) {
-  if (!config || !config.env) {
-    return config
-  }
-
+function getCy10Options(config) {
   const { env } = config
 
   if (!config.specPattern) {
@@ -63,6 +56,34 @@ function cypressGrepPlugin(config) {
 
   const grepFilterSpecs = env.grepFilterSpecs === true
 
+  return {
+    grepFilterSpecs,
+    specPattern,
+    excludeSpecPattern,
+    integrationFolder,
+    grep,
+    grepTags,
+  }
+}
+
+/**
+ * Prints the cy-grep environment values if any.
+ * @param {Cypress.ConfigOptions} config
+ */
+function cypressGrepPlugin(config) {
+  if (!config || !config.env) {
+    return config
+  }
+
+  const {
+    grepFilterSpecs,
+    specPattern,
+    excludeSpecPattern,
+    integrationFolder,
+    grep,
+    grepTags,
+  } = getCy10Options(config)
+
   if (grepFilterSpecs) {
     debug('specPattern', specPattern)
     debug('excludeSpecPattern', excludeSpecPattern)
@@ -86,7 +107,7 @@ function cypressGrepPlugin(config) {
         const text = fs.readFileSync(specFile, { encoding: 'utf8' })
 
         try {
-          const names = getTestNames(text)
+          const names = getTestNames(text, false)
           const testAndSuiteNames = names.suiteNames.concat(names.testNames)
 
           debug('spec file %s', specFile)
@@ -127,7 +148,7 @@ function cypressGrepPlugin(config) {
             const requiredTags = testTags[testTitle].requiredTags
             return shouldTestRun(
               parsedGrep,
-              null,
+              undefined,
               effectiveTags,
               false,
               requiredTags,
@@ -173,6 +194,7 @@ function cypressGrepPlugin(config) {
     }
 
     if (greppedSpecs.length) {
+      // @ts-ignore
       config.specPattern = greppedSpecs
     } else {
       // hmm, we filtered out all specs, probably something is wrong
