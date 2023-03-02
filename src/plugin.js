@@ -67,7 +67,7 @@ function cypressGrepPlugin(config) {
   const { grep, grepTags, grepFilterSpecs } = getGrepSettings(config)
 
   if (grepFilterSpecs) {
-    const specFiles = getSpecs()
+    const specFiles = getSpecs(config)
 
     debug('found %d spec files', specFiles.length)
     debug('%o', specFiles)
