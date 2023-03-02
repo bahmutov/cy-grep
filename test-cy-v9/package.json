@@ -6,6 +6,8 @@
   "scripts": {
     "test": "DEBUG=cy-grep cypress run --env grepTags=@misc",
     "test-expects": "npx cypress-expect run --env grepTags=@misc --expect-exactly expects/misc.json",
+    "test-expects-spec": "npx cypress-expect run --env grepTags=@misc --spec cypress/integration/spec1.js --expect-exactly expects/misc.json",
+    "test-expects-both": "npx cypress-expect run --expect-exactly expects/both.json",
     "open": "cypress open"
   },
   "devDependencies": {
