@@ -1,0 +1,12 @@
+{
+  "cypress": {
+    "integration": {
+      "spec2.js": {
+        "spec2": {
+          "test A": "pending",
+          "test B": "pass"
+        }
+      }
+    }
+  }
+}
