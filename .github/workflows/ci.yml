@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v3
       - name: check dependencies 📦
         # only confirm the prod dependencies are good
-        run: npm audit --report --omit dev
+        run: npm run deps
 
   # TODO: run all e2e tests against the expected results
   test-one-tag:
@@ -129,6 +129,28 @@ jobs:
             --env grepTags=@scrape \
             --expect-exactly ./tests/required-tags-suite/expect-scrape.json
 
+  test-cypress-v9:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+
+      - name: Install dependencies 🧪
+        uses: cypress-io/github-action@v5
+        with:
+          runTests: false
+
+      - name: Install Cypress v9 dependencies 🧪
+        uses: cypress-io/github-action@v5
+        with:
+          working-directory: ./test-cy-v9
+          cache-key: cy-v9-${{ hashFiles('package-lock.json') }}
+          runTests: false
+
+      - name: Grep tags in Cypress v9 folder
+        run: npm run test-expects
+        working-directory: ./test-cy-v9
+
   release:
     needs:
       [
@@ -140,6 +162,7 @@ jobs:
         test-required-tags,
         test-required-tags-only,
         test-required-tags-parent-suite,
+        test-cypress-v9,
       ]
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/main'

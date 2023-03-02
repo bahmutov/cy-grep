@@ -7,11 +7,13 @@
     "cy:run": "cypress run --config specPattern='**/unit.js'",
     "cy:open": "cypress open --e2e -b electron --config specPattern='**/unit.js'",
     "badges": "npx -p dependency-version-badge update-badge cypress",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "deps": "npm audit --report --omit dev"
   },
   "dependencies": {
     "cypress-plugin-config": "^1.2.0",
     "debug": "^4.3.2",
+    "find-cypress-specs": "^1.29.4",
     "find-test-names": "1.28.1",
     "globby": "^11.0.4"
   },
@@ -20,8 +22,8 @@
     "cypress-each": "^1.11.0",
     "cypress-expect": "^3.1.0",
     "prettier": "^2.8.1",
-    "typescript": "^4.7.4",
-    "semantic-release": "^20.1.1"
+    "semantic-release": "^20.1.1",
+    "typescript": "^4.7.4"
   },
   "peerDependencies": {
     "cypress": ">=10"

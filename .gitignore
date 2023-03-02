@@ -1,1 +1,4 @@
 node_modules/
+cypress/videos/
+cypress/screenshots/
+test-cy-v9/cypress/videos/

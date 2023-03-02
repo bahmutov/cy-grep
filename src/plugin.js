@@ -1,26 +1,18 @@
+// @ts-check
 const debug = require('debug')('cy-grep')
 const globby = require('globby')
+
+const { getSpecs } = require('find-cypress-specs')
 const { getTestNames, findEffectiveTestTags } = require('find-test-names')
 const fs = require('fs')
+const path = require('path')
 const { version } = require('../package.json')
 const { parseGrep, shouldTestRun } = require('./utils')
 
-/**
- * Prints the cy-grep environment values if any.
- * @param {Cypress.ConfigOptions} config
- */
-function cypressGrepPlugin(config) {
-  if (!config || !config.env) {
-    return config
-  }
+const isCypressV9 = (config) => !('specPattern' in config)
 
+function getGrepSettings(config) {
   const { env } = config
-
-  if (!config.specPattern) {
-    throw new Error(
-      'Incompatible versions detected, cy-grep requires Cypress 10.0.0+',
-    )
-  }
 
   debug('cy-grep plugin version %s', version)
   debug('Cypress config env object: %o', env)
@@ -58,20 +50,24 @@ function cypressGrepPlugin(config) {
     console.log('cy-grep: will omit filtered tests')
   }
 
-  const { specPattern, excludeSpecPattern } = config
-  const integrationFolder = env.grepIntegrationFolder || process.cwd()
-
   const grepFilterSpecs = env.grepFilterSpecs === true
 
+  return { grep, grepTags, grepFilterSpecs }
+}
+
+/**
+ * Prints the cy-grep environment values if any.
+ * @param {Cypress.ConfigOptions} config
+ */
+function cypressGrepPlugin(config) {
+  if (!config || !config.env) {
+    return config
+  }
+
+  const { grep, grepTags, grepFilterSpecs } = getGrepSettings(config)
+
   if (grepFilterSpecs) {
-    debug('specPattern', specPattern)
-    debug('excludeSpecPattern', excludeSpecPattern)
-    debug('integrationFolder', integrationFolder)
-    const specFiles = globby.sync(specPattern, {
-      cwd: integrationFolder,
-      ignore: excludeSpecPattern,
-      absolute: true,
-    })
+    const specFiles = getSpecs(config)
 
     debug('found %d spec files', specFiles.length)
     debug('%o', specFiles)
@@ -86,7 +82,7 @@ function cypressGrepPlugin(config) {
         const text = fs.readFileSync(specFile, { encoding: 'utf8' })
 
         try {
-          const names = getTestNames(text)
+          const names = getTestNames(text, false)
           const testAndSuiteNames = names.suiteNames.concat(names.testNames)
 
           debug('spec file %s', specFile)
@@ -127,7 +123,7 @@ function cypressGrepPlugin(config) {
             const requiredTags = testTags[testTitle].requiredTags
             return shouldTestRun(
               parsedGrep,
-              null,
+              undefined,
               effectiveTags,
               false,
               requiredTags,
@@ -173,7 +169,25 @@ function cypressGrepPlugin(config) {
     }
 
     if (greppedSpecs.length) {
-      config.specPattern = greppedSpecs
+      if (isCypressV9(config)) {
+        debug('setting selected %d specs (< v10)', greppedSpecs.length)
+        // @ts-ignore
+        const integrationFolder = config.integrationFolder
+        const relativeNames = greppedSpecs.map((filename) =>
+          path.relative(integrationFolder, filename),
+        )
+        debug(
+          'specs in the integration folder %s %s',
+          integrationFolder,
+          relativeNames.join(', '),
+        )
+        // @ts-ignore
+        config.testFiles = relativeNames.join(',')
+      } else {
+        debug('setting selected %d specs (>= v10)', greppedSpecs.length)
+        // @ts-ignore
+        config.specPattern = greppedSpecs
+      }
     } else {
       // hmm, we filtered out all specs, probably something is wrong
       console.warn('grep and/or grepTags has eliminated all specs')
