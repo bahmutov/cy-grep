@@ -5,9 +5,11 @@
   "private": true,
   "scripts": {
     "test": "DEBUG=cy-grep cypress run --env grepTags=@misc",
+    "test-expects": "npx cypress-expect run --env grepTags=@misc --expect-exactly expects/misc.json",
     "open": "cypress open"
   },
   "devDependencies": {
-    "cypress": "^9.7.0"
+    "cypress": "^9.7.0",
+    "cypress-expect": "^3.1.0"
   }
 }

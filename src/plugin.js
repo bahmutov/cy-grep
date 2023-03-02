@@ -55,27 +55,6 @@ function getGrepSettings(config) {
   return { grep, grepTags, grepFilterSpecs }
 }
 
-function getCy10Options(config) {
-  const { env } = config
-
-  if (!config.specPattern) {
-    // console.log(config)
-    console.log(getSpecs())
-    throw new Error(
-      'Incompatible versions detected, cy-grep requires Cypress 10.0.0+',
-    )
-  }
-
-  const { specPattern, excludeSpecPattern } = config
-  const integrationFolder = env.grepIntegrationFolder || process.cwd()
-
-  return {
-    specPattern,
-    excludeSpecPattern,
-    integrationFolder,
-  }
-}
-
 /**
  * Prints the cy-grep environment values if any.
  * @param {Cypress.ConfigOptions} config
@@ -87,18 +66,7 @@ function cypressGrepPlugin(config) {
 
   const { grep, grepTags, grepFilterSpecs } = getGrepSettings(config)
 
-  // const { specPattern, excludeSpecPattern, integrationFolder } =
-  //   getCy10Options(config)
-
   if (grepFilterSpecs) {
-    // debug('specPattern', specPattern)
-    // debug('excludeSpecPattern', excludeSpecPattern)
-    // debug('integrationFolder', integrationFolder)
-    // const specFiles = globby.sync(specPattern, {
-    //   cwd: integrationFolder,
-    //   ignore: excludeSpecPattern,
-    //   absolute: true,
-    // })
     const specFiles = getSpecs()
 
     debug('found %d spec files', specFiles.length)

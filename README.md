@@ -84,7 +84,7 @@ npm i -D @bahmutov/cy-grep
 yarn add -D @bahmutov/cy-grep
 ```
 
-**Note**: @bahmutov/cy-grep only works with Cypress version >= 10.
+**Note**: @bahmutov/cy-grep should work with all Cypress versions, but I mostly test it on the newest versions.
 
 ### Support file
 

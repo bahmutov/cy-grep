@@ -7,12 +7,13 @@
     "cy:run": "cypress run --config specPattern='**/unit.js'",
     "cy:open": "cypress open --e2e -b electron --config specPattern='**/unit.js'",
     "badges": "npx -p dependency-version-badge update-badge cypress",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "deps": "npm audit --report --omit dev"
   },
   "dependencies": {
     "cypress-plugin-config": "^1.2.0",
     "debug": "^4.3.2",
-    "find-cypress-specs": "^1.29.0",
+    "find-cypress-specs": "^1.29.1",
     "find-test-names": "1.28.1",
     "globby": "^11.0.4"
   },

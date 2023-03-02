@@ -1,0 +1,11 @@
+{
+  "cypress": {
+    "integration": {
+      "spec1.js": {
+        "spec1": {
+          "first test": "pass"
+        }
+      }
+    }
+  }
+}
