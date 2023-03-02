@@ -176,13 +176,14 @@ function cypressGrepPlugin(config) {
         const relativeNames = greppedSpecs.map((filename) =>
           path.relative(integrationFolder, filename),
         )
+        const relativeSpecs = relativeNames.join(', ')
         debug(
           'specs in the integration folder %s %s',
           integrationFolder,
-          relativeNames.join(', '),
+          relativeSpecs,
         )
         // @ts-ignore
-        config.testFiles = relativeNames.join(',')
+        config.testFiles = relativeNames
       } else {
         debug('setting selected %d specs (>= v10)', greppedSpecs.length)
         // @ts-ignore

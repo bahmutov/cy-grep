@@ -151,6 +151,14 @@ jobs:
         run: npm run test-expects
         working-directory: ./test-cy-v9
 
+      - name: Grep tags in Cypress v9 folder with --spec argument
+        run: npm run test-expects-spec
+        working-directory: ./test-cy-v9
+
+      - name: Runs without any grep filters
+        run: npm run test-expects-both
+        working-directory: ./test-cy-v9
+
   release:
     needs:
       [
