@@ -1,0 +1,16 @@
+{
+  "name": "test-cy-v9-required-tags",
+  "version": "1.0.0",
+  "description": "cy-grep with Cypress v9 and required tags",
+  "private": true,
+  "scripts": {
+    "test": "DEBUG=cy-grep cypress run --env grepTags=@misc",
+    "test-required-tag-test": "npx cypress-expect run --env grepTags=@misc --expect-exactly expects/misc.json",
+    "test-required-tag-suite": "DEBUG=cy-grep npx cypress-expect run --env grepTags=@second --expect-exactly expects/second.json",
+    "open": "cypress open"
+  },
+  "devDependencies": {
+    "cypress": "^9.7.0",
+    "cypress-expect": "^3.1.0"
+  }
+}
