@@ -178,7 +178,7 @@ jobs:
           runTests: false
 
       - name: Grep required test tags in Cypress v9 folder
-        run: npm run test-test-required-tag-test
+        run: npm run test-required-tag-test
         working-directory: ./test-cy-v9-required-tags
 
       - name: Grep required suite tags in Cypress v9 folder
