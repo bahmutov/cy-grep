@@ -144,6 +144,7 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           project: test-cy-v9
+          cache-key: cy-v9-${{ hashFiles('package-lock.json') }}
           runTests: false
 
       - name: Grep tags in Cypress v9 folder
