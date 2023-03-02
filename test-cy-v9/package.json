@@ -1,0 +1,13 @@
+{
+  "name": "test-cy-v9",
+  "version": "1.0.0",
+  "description": "cy-grep with Cypress v9",
+  "private": true,
+  "scripts": {
+    "test": "DEBUG=cy-grep cypress run --env grepTags=@misc",
+    "open": "cypress open"
+  },
+  "devDependencies": {
+    "cypress": "^9.7.0"
+  }
+}
