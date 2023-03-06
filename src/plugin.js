@@ -1,6 +1,5 @@
 // @ts-check
 const debug = require('debug')('cy-grep')
-const globby = require('globby')
 
 const { getSpecs } = require('find-cypress-specs')
 const { getTestNames, findEffectiveTestTags } = require('find-test-names')
