@@ -95,6 +95,28 @@ function parseTagsGrep(s) {
   return ORS_filtered
 }
 
+/**
+ * Given a user string of tags to find, with various connectors,
+ * returns the list of just the tags themselves. Could be used to
+ * quickly filter test specs or find misspelled tags.
+ * @returns {string[]} list of unique tags
+ */
+function getMentionedTags(s) {
+  if (!s) {
+    return []
+  }
+  const spaced = s.replaceAll(/[+,]/g, ' ')
+  const tags = spaced
+    .split(' ')
+    .map((s) => s.trim())
+    .filter(Boolean)
+    // remove any "-" at the start of the tag
+    // because these are to signal inverted tags
+    .map((s) => (s.startsWith('-') ? s.slice(1) : s))
+  const uniqueTags = [...new Set(tags)]
+  return uniqueTags.sort()
+}
+
 function shouldTestRunRequiredTags(parsedGrepTags, requiredTags = []) {
   if (!requiredTags.length) {
     // there are no tags to check
@@ -216,4 +238,5 @@ module.exports = {
   shouldTestRunTags,
   shouldTestRunRequiredTags,
   shouldTestRunTitle,
+  getMentionedTags,
 }

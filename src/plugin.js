@@ -6,7 +6,7 @@ const { getTestNames, findEffectiveTestTags } = require('find-test-names')
 const fs = require('fs')
 const path = require('path')
 const { version } = require('../package.json')
-const { parseGrep, shouldTestRun } = require('./utils')
+const { parseGrep, shouldTestRun, getMentionedTags } = require('./utils')
 
 const isCypressV9 = (config) => !('specPattern' in config)
 
@@ -106,8 +106,10 @@ function cypressGrepPlugin(config) {
       debug('%o', greppedSpecs)
     } else if (grepTags) {
       const parsedGrep = parseGrep(null, grepTags)
-
       debug('parsed grep tags %o', parsedGrep)
+      const mentionedTags = getMentionedTags(grepTags)
+      debug('user mentioned tags %o', mentionedTags)
+
       greppedSpecs = specFiles.filter((specFile) => {
         const text = fs.readFileSync(specFile, { encoding: 'utf8' })
 

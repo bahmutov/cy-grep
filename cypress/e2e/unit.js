@@ -10,9 +10,32 @@ import {
   shouldTestRunTags,
   shouldTestRunRequiredTags,
   shouldTestRunTitle,
+  getMentionedTags,
 } from '../../src/utils'
 
 describe('utils', () => {
+  context('getMentionedTags', () => {
+    it('returns unique tags', () => {
+      const tags = getMentionedTags('@tag1+@tag2+@tag3')
+      expect(tags).to.deep.equal(['@tag1', '@tag2', '@tag3'])
+    })
+
+    it('sorts returned tags', () => {
+      const tags = getMentionedTags('x y a')
+      expect(tags).to.deep.equal(['a', 'x', 'y'])
+    })
+
+    it('handles -', () => {
+      const tags = getMentionedTags('@smoke+@screen-b')
+      expect(tags).to.deep.equal(['@screen-b', '@smoke'])
+    })
+
+    it('handles extra spaces', () => {
+      const tags = getMentionedTags('  @tag1   -@tag2 ')
+      expect(tags).to.deep.equal(['@tag1', '@tag2'])
+    })
+  })
+
   context('parseTitleGrep', () => {
     it('grabs the positive title', () => {
       const parsed = parseTitleGrep('hello w')
@@ -51,7 +74,7 @@ describe('utils', () => {
     })
 
     it('returns null for undefined input', () => {
-      const parsed = parseTitleGrep()
+      const parsed = parseTitleGrep(undefined)
 
       expect(parsed).to.equal(null)
     })
@@ -271,10 +294,12 @@ describe('utils', () => {
       expect(shouldTestRun(parsed, 'hello w'), 'needs tags').to.equal(false)
       expect(shouldTestRun(parsed, 'hello no')).to.equal(false)
       // not every tag is present
-      expect(shouldTestRun(parsed, ['@tag1', '@tag2'])).to.equal(false)
-      expect(shouldTestRun(parsed, ['@tag1', '@tag2', '@tag3'])).to.equal(true)
+      expect(shouldTestRun(parsed, '', ['@tag1', '@tag2'])).to.equal(false)
+      expect(shouldTestRun(parsed, '', ['@tag1', '@tag2', '@tag3'])).to.equal(
+        true,
+      )
       expect(
-        shouldTestRun(parsed, ['@tag1', '@tag2', '@tag3', '@tag4']),
+        shouldTestRun(parsed, '', ['@tag1', '@tag2', '@tag3', '@tag4']),
       ).to.equal(true)
 
       // title matches, but tags do not
