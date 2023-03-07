@@ -288,6 +288,13 @@ If you can pass commas in the environment variable `grepTags`, you can use `,` t
 CYPRESS_grepTags=one,two npx cypress run
 ```
 
+If a specific tag is not found in the specs, you will get a warning in the terminal:
+
+```
+$ npx cypress run --env grepTags=@wrong-tag
+cy-grep: could not find the tag "@wrong-tag" in any of the specs
+```
+
 ### Tags in the test config object
 
 Cypress tests can have their own [test config object](https://on.cypress.io/configuration#Test-Configuration), and when using this plugin you can put the test tags there, either as a single tag string or as an array of tags.
