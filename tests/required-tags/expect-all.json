@@ -1,0 +1,8 @@
+{
+  "e2e": {
+    "spec.cy.js": {
+      "runs always": "pending",
+      "runs only when tag \"special\" is on": "pending"
+    }
+  }
+}

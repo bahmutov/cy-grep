@@ -87,6 +87,25 @@ jobs:
             --env grepTags=@special \
             --expect-exactly ./tests/required-tags/expect-with-required-tag.json
 
+  test-tag-not-found:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+
+      - name: Install Cypress 🧪
+        uses: cypress-io/github-action@v5
+        with:
+          runTests: false
+
+      - name: looking for tag that does not exist
+        # should show a warning and run all specs
+        run: |
+          npx cypress-expect run \
+            --project tests/required-tags \
+            --env grepTags=@wrong-tag,grepFilterSpecs=true \
+            --expect-exactly ./tests/required-tags/expect-all.json
+
   test-required-tags-only:
     runs-on: ubuntu-20.04
     steps:

@@ -109,6 +109,8 @@ function cypressGrepPlugin(config) {
       debug('parsed grep tags %o', parsedGrep)
       const mentionedTags = getMentionedTags(grepTags)
       debug('user mentioned tags %o', mentionedTags)
+      // unique tags found across all specs we search
+      const foundTags = new Set()
 
       greppedSpecs = specFiles.filter((specFile) => {
         const text = fs.readFileSync(specFile, { encoding: 'utf8' })
@@ -122,6 +124,15 @@ function cypressGrepPlugin(config) {
           return Object.keys(testTags).some((testTitle) => {
             const effectiveTags = testTags[testTitle].effectiveTags
             const requiredTags = testTags[testTitle].requiredTags
+
+            // remember all found tags
+            effectiveTags.forEach((tag) => {
+              foundTags.add(tag)
+            })
+            requiredTags.forEach((tag) => {
+              foundTags.add(tag)
+            })
+
             return shouldTestRun(
               parsedGrep,
               undefined,
@@ -140,6 +151,17 @@ function cypressGrepPlugin(config) {
 
       debug('found grep tags "%s" in %d specs', grepTags, greppedSpecs.length)
       debug('%o', greppedSpecs)
+
+      debug('all found tags across the specs %o', ...foundTags)
+      debug('user mentioned tags %o', mentionedTags)
+      mentionedTags.forEach((tag) => {
+        if (!foundTags.has(tag)) {
+          console.warn(
+            'cy-grep: could not find the tag "%s" in any of the specs',
+            tag,
+          )
+        }
+      })
     } else {
       // we have no tags to grep
       debug('will try eliminating specs with required tags')
@@ -192,10 +214,10 @@ function cypressGrepPlugin(config) {
       }
     } else {
       // hmm, we filtered out all specs, probably something is wrong
-      console.warn('grep and/or grepTags has eliminated all specs')
-      grep ? console.warn('grep: %s', grep) : null
-      grepTags ? console.warn('grepTags: %s', grepTags) : null
-      console.warn('Will leave all specs to run to filter at run-time')
+      console.warn('cy-grep: grep and/or grepTags has eliminated all specs')
+      grep ? console.warn('cy-grep: title: %s', grep) : null
+      grepTags ? console.warn('cy-grep: tags: %s', grepTags) : null
+      console.warn('cy-grep: Will leave all specs to run to filter at run-time')
     }
   }
 
