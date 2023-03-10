@@ -34,6 +34,11 @@ describe('utils', () => {
       const tags = getMentionedTags('  @tag1   -@tag2 ')
       expect(tags).to.deep.equal(['@tag1', '@tag2'])
     })
+
+    it('handles extra commas and empty values', () => {
+      const tags = getMentionedTags(',,,@tag2,')
+      expect(tags).to.deep.equal(['@tag2'])
+    })
   })
 
   context('parseTitleGrep', () => {

@@ -70,6 +70,7 @@ Watch the video [intro to cypress-grep plugin](https://www.youtube.com/watch?v=H
     - [Debugging in the browser](#debugging-in-the-browser)
   - [Examples](#examples)
   - [See also](#see-also)
+  - [cy-grep vs cypress-grep vs @cypress/grep](#cy-grep-vs-cypress-grep-vs-cypressgrep)
   - [Small Print](#small-print)
 
 <!-- /MarkdownTOC -->
@@ -650,7 +651,24 @@ To see how to debug this plugin, watch the video [Debug cypress-grep Plugin](htt
 - [cypress-select-tests](https://github.com/bahmutov/cypress-select-tests)
 - [cypress-skip-test](https://github.com/cypress-io/cypress-skip-test)
 
+## cy-grep vs cypress-grep vs @cypress/grep
+
+Many years ago I wrote a plugin `cypress-grep`. When I left the company Cypress, I transferred that MIT-licensed plugin to the Cypress GitHub organization. They moved it to the Cypress monorepo and renamed the NPM module `@cypress/grep`. I still use this grep plugin in some projects. When Cypress v10 was released, it broke some of the things in the plugin. Since I needed to fix it quickly and the monorepo setup is suboptimal, I forked the plugin back to my own repo `bahmutov/cy-grep` (this repo) and released under NPM name `@bahmutov/cy-grep`.
+
+I plan to maintain the plugin `@bahmutov/cy-grep` in the future, since I rely on it myself **a lot**.
+
 ## Small Print
+
+Author: Gleb Bahmutov &lt;gleb.bahmutov@gmail.com&gt; &copy; 2022
+
+- [@bahmutov](https://twitter.com/bahmutov)
+- [glebbahmutov.com](https://glebbahmutov.com)
+- [blog](https://glebbahmutov.com/blog)
+- [videos](https://www.youtube.com/glebbahmutov)
+- [presentations](https://slides.com/bahmutov)
+- [cypress.tips](https://cypress.tips)
+- [Cypress Tips & Tricks Newsletter](https://cypresstips.substack.com/)
+- [my Cypress courses](https://cypress.tips/courses)
 
 License: MIT - do anything with the code, but don't blame me if it does not work.
 
