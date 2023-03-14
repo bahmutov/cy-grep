@@ -98,6 +98,20 @@ describe('utils', () => {
   })
 
   context('parseTagsGrep', () => {
+    it('allows arrays of tags', () => {
+      const parsed = parseTagsGrep(['@tag1+@tag2', '@tag3'])
+
+      expect(parsed).to.deep.equal([
+        // two OR parts
+        [
+          // with 3 AND parts
+          { tag: '@tag1', invert: false },
+          { tag: '@tag2', invert: false },
+        ],
+        [{ tag: '@tag3', invert: false }],
+      ])
+    })
+
     it('parses AND tags', () => {
       // run only the tests with all 3 tags
       const parsed = parseTagsGrep('@tag1+@tag2+@tag3')

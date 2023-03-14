@@ -37,13 +37,20 @@ function parseFullTitleGrep(s) {
 
 /**
  * Parses tags to grep for.
- * @param {string} s Tags string like "@tag1+@tag2"
+ * @param {string|string[]} s Tags string like "@tag1+@tag2", or array of tags
+ * @example
+ *  parseTagsGrep('@tag1+@tag2')
+ * @example
+ *  parseTagsGrep(['@tag1', '@tag2'])
  */
 function parseTagsGrep(s) {
   if (!s) {
     return []
   }
 
+  if (Array.isArray(s)) {
+    s = s.join(',')
+  }
   const explicitNotTags = []
 
   // top level split - using space or comma, each part is OR
