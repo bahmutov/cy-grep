@@ -48,6 +48,20 @@ jobs:
             --config specPattern=cypress/e2e/effective-tags/*.js \
             --expect-exactly expects/effective-tags/spec-a.json
 
+  test-parent-suite-name:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+
+      - name: Run tests for "projects" 🧪
+        uses: cypress-io/github-action@v5
+        with:
+          command: npx cypress-expect run \
+            --env grep=projects,grepFilterSpecs=true,grepOmitFiltered=true \
+            --config specPattern=cypress/e2e/negative-grep-spec.js \
+            --expect-exactly expects/negative-grep-projects.json
+
   # https://github.com/bahmutov/cy-grep/issues/4
   test-effective-tags-AND-filter:
     runs-on: ubuntu-20.04
