@@ -1,0 +1,13 @@
+{
+  "cypress": {
+    "e2e": {
+      "negative-grep-spec.js": {
+        "projects": {
+          "load 1": "pass",
+          "load 2": "pass",
+          "load 3": "pass"
+        }
+      }
+    }
+  }
+}
