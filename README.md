@@ -60,6 +60,7 @@ Watch the video [intro to cypress-grep plugin](https://www.youtube.com/watch?v=H
   - [Disable grep](#disable-grep)
   - [Burn (repeat) tests](#burn-repeat-tests)
   - [Required tags](#required-tags)
+  - [Negative grep](#negative-grep)
   - [TypeScript support](#typescript-support)
   - [General advice](#general-advice)
   - [DevTools console](#devtools-console)
@@ -485,6 +486,26 @@ When you run the tests now, this test will be skipped, as if it were `it.skip`. 
 If `grepFilterSpecs=true` and a spec has only required tags, and you are running without any tags, the the spec will be skipped completely.
 
 Read the blog post 📝 [Required Tags](https://glebbahmutov.com/blog/required-tags/).
+
+## Negative grep
+
+When grepping tests by title, the parent suite title is included. For example if this is the spec
+
+```js
+describe('users', () => {
+  it('works 1', () => {})
+  it('works 2', () => {})
+  it('works 3', () => {})
+})
+
+describe('projects', () => {
+  it('load 1', () => {})
+  it('load 2', () => {})
+  it('load 3', () => {})
+})
+```
+
+You can run the tests inside the suite "projects" by using `--env grep=projects` and you can skip the tests in the suite `projects` by using `--env grep=-projects`.
 
 ## TypeScript support
 

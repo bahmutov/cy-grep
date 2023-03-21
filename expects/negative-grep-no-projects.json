@@ -1,0 +1,13 @@
+{
+  "cypress": {
+    "e2e": {
+      "negative-grep-spec.js": {
+        "users": {
+          "works 1": "pass",
+          "works 2": "pass",
+          "works 3": "pass"
+        }
+      }
+    }
+  }
+}
