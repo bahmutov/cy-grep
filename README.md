@@ -62,6 +62,7 @@ Watch the video [intro to cypress-grep plugin](https://www.youtube.com/watch?v=H
   - [Required tags](#required-tags)
   - [Negative grep](#negative-grep)
   - [TypeScript support](#typescript-support)
+  - [grepPrefixAt](#grepprefixat)
   - [General advice](#general-advice)
   - [DevTools console](#devtools-console)
     - [grepFailed](#grepfailed)
@@ -536,6 +537,19 @@ If you have `tsconfig.json` file, add this library to the types list
   },
   "include": ["**/*.ts"]
 }
+```
+
+## grepPrefixAt
+
+Using test tags that start with `@` is so common, you can enforce it using the env option `grepPrefixAt: true`. This lets you use `@tag1,@tag2, ...` or `tag1,tag2, ...` when calling.
+
+```
+# use grepPrefixAt in your env settings object
+# use { tags: '@tag1' } in your tests
+
+# then these two are equivalent
+--env grepTags=@tag1
+--env grepTags=tag1
 ```
 
 ## General advice
