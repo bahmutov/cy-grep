@@ -114,7 +114,7 @@ function cypressGrepPlugin(config) {
     } else if (grepTags) {
       const parsedGrep = parseGrep(null, grepTags, grepPrefixAt)
       debug('parsed grep tags %o', parsedGrep)
-      const mentionedTags = getMentionedTags(grepTags)
+      const mentionedTags = getMentionedTags(grepTags, grepPrefixAt)
       debug('user mentioned tags %o', mentionedTags)
       // unique tags found across all specs we search
       const foundTags = new Set()

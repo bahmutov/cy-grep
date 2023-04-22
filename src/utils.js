@@ -118,9 +118,11 @@ function parseTagsGrep(s, grepPrefixAt = false) {
  * Given a user string of tags to find, with various connectors,
  * returns the list of just the tags themselves. Could be used to
  * quickly filter test specs or find misspelled tags.
+ * @param {string} s String of tags passed by the user
+ * @param {boolean} grepPrefixAt Enforce the `@` character at the start of each tag
  * @returns {string[]} list of unique tags
  */
-function getMentionedTags(s) {
+function getMentionedTags(s, grepPrefixAt = false) {
   if (!s) {
     return []
   }
@@ -132,6 +134,15 @@ function getMentionedTags(s) {
     // remove any "-" at the start of the tag
     // because these are to signal inverted tags
     .map((s) => (s.startsWith('-') ? s.slice(1) : s))
+    .map((tag) => {
+      if (grepPrefixAt) {
+        if (!tag.startsWith('@')) {
+          return '@' + tag
+        }
+      }
+
+      return tag
+    })
   const uniqueTags = [...new Set(tags)]
   return uniqueTags.sort()
 }
