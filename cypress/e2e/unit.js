@@ -42,6 +42,15 @@ describe('utils', () => {
       const tags = getMentionedTags(',,,@tag2,')
       expect(tags).to.deep.equal(['@tag2'])
     })
+
+    describe('grepPrefixAt', () => {
+      const grepPrefixAt = true
+
+      it('returns unique tags', () => {
+        const tags = getMentionedTags('tag1+tag2+tag3', grepPrefixAt)
+        expect(tags).to.deep.equal(['@tag1', '@tag2', '@tag3'])
+      })
+    })
   })
 
   context('parseTitleGrep', () => {
@@ -100,7 +109,7 @@ describe('utils', () => {
     })
   })
 
-  context.only('parseTagsGrep', () => {
+  context('parseTagsGrep', () => {
     it('allows arrays of tags', () => {
       const parsed = parseTagsGrep(['@tag1+@tag2', '@tag3'])
 
