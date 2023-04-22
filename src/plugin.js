@@ -22,11 +22,13 @@ function getGrepSettings(config) {
     console.log('cy-grep: tests with "%s" in their names', grep.trim())
   }
 
+  const grepPrefixAt = env.grepPrefixAt
+
   const grepTags = env.grepTags || env['grep-tags']
 
   if (grepTags) {
     console.log('cy-grep: filtering using tag(s) "%s"', grepTags)
-    const parsedGrep = parseGrep(null, grepTags)
+    const parsedGrep = parseGrep(null, grepTags, grepPrefixAt)
 
     debug('parsed grep tags %o', parsedGrep.tags)
   }

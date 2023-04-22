@@ -38,12 +38,13 @@ function parseFullTitleGrep(s) {
 /**
  * Parses tags to grep for.
  * @param {string|string[]} s Tags string like "@tag1+@tag2", or array of tags
+ * @param {boolean} grepPrefixAt Prefix all tags with "@" if needed
  * @example
  *  parseTagsGrep('@tag1+@tag2')
  * @example
  *  parseTagsGrep(['@tag1', '@tag2'])
  */
-function parseTagsGrep(s) {
+function parseTagsGrep(s, grepPrefixAt = false) {
   if (!s) {
     return []
   }
@@ -229,10 +230,10 @@ function shouldTestRun(
   )
 }
 
-function parseGrep(titlePart, tags) {
+function parseGrep(titlePart, tags, grepPrefixAt) {
   return {
     title: parseFullTitleGrep(titlePart),
-    tags: parseTagsGrep(tags),
+    tags: parseTagsGrep(tags, grepPrefixAt),
   }
 }
 
