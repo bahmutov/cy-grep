@@ -22,11 +22,13 @@ function getGrepSettings(config) {
     console.log('cy-grep: tests with "%s" in their names', grep.trim())
   }
 
+  const grepPrefixAt = env.grepPrefixAt || env['grep-prefix-at']
+
   const grepTags = env.grepTags || env['grep-tags']
 
   if (grepTags) {
     console.log('cy-grep: filtering using tag(s) "%s"', grepTags)
-    const parsedGrep = parseGrep(null, grepTags)
+    const parsedGrep = parseGrep(null, grepTags, grepPrefixAt)
 
     debug('parsed grep tags %o', parsedGrep.tags)
   }
@@ -51,7 +53,11 @@ function getGrepSettings(config) {
 
   const grepFilterSpecs = env.grepFilterSpecs === true
 
-  return { grep, grepTags, grepFilterSpecs }
+  if (grepPrefixAt) {
+    console.log('cy-grep: all tags will be forced to start with @')
+  }
+
+  return { grep, grepTags, grepFilterSpecs, grepPrefixAt }
 }
 
 /**
@@ -63,7 +69,8 @@ function cypressGrepPlugin(config) {
     return config
   }
 
-  const { grep, grepTags, grepFilterSpecs } = getGrepSettings(config)
+  const { grep, grepTags, grepFilterSpecs, grepPrefixAt } =
+    getGrepSettings(config)
 
   if (grepFilterSpecs) {
     const specFiles = getSpecs(config)
@@ -74,7 +81,7 @@ function cypressGrepPlugin(config) {
 
     if (grep) {
       console.log('cy-grep: filtering specs using "%s" in the title', grep)
-      const parsedGrep = parseGrep(grep)
+      const parsedGrep = parseGrep(grep, undefined, grepPrefixAt)
 
       debug('parsed grep %o', parsedGrep)
       greppedSpecs = specFiles.filter((specFile) => {
@@ -105,7 +112,7 @@ function cypressGrepPlugin(config) {
       debug('found grep "%s" in %d specs', grep, greppedSpecs.length)
       debug('%o', greppedSpecs)
     } else if (grepTags) {
-      const parsedGrep = parseGrep(null, grepTags)
+      const parsedGrep = parseGrep(null, grepTags, grepPrefixAt)
       debug('parsed grep tags %o', parsedGrep)
       const mentionedTags = getMentionedTags(grepTags)
       debug('user mentioned tags %o', mentionedTags)

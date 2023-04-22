@@ -34,6 +34,18 @@ jobs:
         with:
           command: npx cypress-expect run --env grepTags=@tag1 --expect-exactly expects/tag1.json
 
+  test-prefix-tags:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+
+      - name: Run single tag 🧪
+        uses: cypress-io/github-action@v5
+        with:
+          # the plugin should automatically prefix tags with "@" character
+          command: npx cypress-expect run --env grepTags=tag1,grepPrefixAt=true --expect-exactly expects/prefix-tag1.json
+
   test-one-spec-filter:
     runs-on: ubuntu-20.04
     steps:
@@ -242,6 +254,7 @@ jobs:
         test-cypress-v9,
         test-cypress-v9-required-tags,
         test-parent-suite-name,
+        test-prefix-tags,
       ]
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/main'

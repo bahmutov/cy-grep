@@ -13,6 +13,9 @@ import {
   getMentionedTags,
 } from '../../src/utils'
 
+// print full objects in the assertions
+chai.config.truncateThreshold = 500
+
 describe('utils', () => {
   context('getMentionedTags', () => {
     it('returns unique tags', () => {
@@ -97,7 +100,7 @@ describe('utils', () => {
     })
   })
 
-  context('parseTagsGrep', () => {
+  context.only('parseTagsGrep', () => {
     it('allows arrays of tags', () => {
       const parsed = parseTagsGrep(['@tag1+@tag2', '@tag3'])
 
@@ -223,6 +226,34 @@ describe('utils', () => {
           { tag: '@tag2', invert: true },
         ],
       ])
+    })
+
+    describe('grepPrefixAt', () => {
+      const grepPrefixAt = true
+
+      it('parses AND tags', () => {
+        // run only the tests with all 3 tags
+        const parsed = parseTagsGrep('tag1+tag2+tag3', grepPrefixAt)
+
+        expect(parsed).to.deep.equal([
+          // single OR part
+          [
+            // with 3 AND parts
+            { tag: '@tag1', invert: false },
+            { tag: '@tag2', invert: false },
+            { tag: '@tag3', invert: false },
+          ],
+        ])
+      })
+
+      it('parses tag1 but not tag2 with space', () => {
+        const parsed = parseTagsGrep('tag1 -tag2', grepPrefixAt)
+
+        expect(parsed).to.deep.equal([
+          [{ tag: '@tag1', invert: false }],
+          [{ tag: '@tag2', invert: true }],
+        ])
+      })
     })
   })
 
