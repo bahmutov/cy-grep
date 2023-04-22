@@ -61,12 +61,23 @@ function registerCyGrep() {
     getPluginConfigValue('grepOmitFiltered') ||
     getPluginConfigValue('grep-omit-filtered')
 
-  debug('grep %o', { grep, grepTags, grepBurn, omitFiltered, version })
+  const grepPrefixAt =
+    getPluginConfigValue('grepPrefixAt') ||
+    getPluginConfigValue('grep-prefix-at')
+
+  debug('grep %o', {
+    grep,
+    grepTags,
+    grepBurn,
+    omitFiltered,
+    grepPrefixAt,
+    version,
+  })
   if (!Cypress._.isInteger(grepBurn) || grepBurn < 1) {
     throw new Error(`Invalid grep burn value: ${grepBurn}`)
   }
 
-  const parsedGrep = parseGrep(grep, grepTags)
+  const parsedGrep = parseGrep(grep, grepTags, grepPrefixAt)
 
   debug('parsed grep %o', parsedGrep)
 

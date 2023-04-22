@@ -100,6 +100,17 @@ function parseTagsGrep(s, grepPrefixAt = false) {
     }
   }
 
+  if (grepPrefixAt) {
+    const prefix = '@'
+    ORS_filtered.forEach((OR) => {
+      OR.forEach((token) => {
+        if (token.tag && !token.tag.startsWith(prefix)) {
+          token.tag = prefix + token.tag
+        }
+      })
+    })
+  }
+
   return ORS_filtered
 }
 
