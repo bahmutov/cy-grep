@@ -486,7 +486,7 @@ When you run the tests now, this test will be skipped, as if it were `it.skip`. 
 
 If `grepFilterSpecs=true` and a spec has only required tags, and you are running without any tags, the the spec will be skipped completely.
 
-Read the blog post 📝 [Required Tags](https://glebbahmutov.com/blog/required-tags/).
+Read the blog posts 📝 [Required Tags](https://glebbahmutov.com/blog/required-tags/) and [Use Required Test Tags Instead Of Skipping Tests](https://glebbahmutov.com/blog/required-tags-instead-of-skipped-tests/).
 
 ## Negative grep
 
