@@ -1,0 +1,11 @@
+{
+  "cypress": {
+    "e2e": {
+      "spec-parameter": {
+        "a.cy.js": {
+          "works A": "pending"
+        }
+      }
+    }
+  }
+}

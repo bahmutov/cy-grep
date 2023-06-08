@@ -63,6 +63,7 @@ Watch the video [intro to cypress-grep plugin](https://www.youtube.com/watch?v=H
   - [Negative grep](#negative-grep)
   - [TypeScript support](#typescript-support)
   - [grepPrefixAt](#grepprefixat)
+  - [grepSpec](#grepspec)
   - [General advice](#general-advice)
   - [DevTools console](#devtools-console)
     - [grepFailed](#grepfailed)
@@ -550,6 +551,14 @@ Using test tags that start with `@` is so common, you can enforce it using the e
 # then these two are equivalent
 --env grepTags=@tag1
 --env grepTags=tag1
+```
+
+## grepSpec
+
+If the user selected spec(s) to run, then it might conflict with `grepFilterSpecs=true` that filters the specs. There is no way to "know" if the user used `--spec <...>` option when the plugin runs, see issues [33](https://github.com/bahmutov/cy-grep/issues/33) and [26032](https://github.com/cypress-io/cypress/issues/26032). Thus if you use `--spec pattern`, you need to pass it to the plugin via `CYPRESS_grepSpec=pattern` or `--env grepSpec=pattern` option.
+
+```
+cypress run --spec a.cy.js --env grepTags=...,grepSpec=a.cy.js
 ```
 
 ## General advice

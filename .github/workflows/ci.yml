@@ -47,6 +47,27 @@ jobs:
           # the plugin should automatically prefix tags with "@" character
           command: npx cypress-expect run --env grepTags=tag1,grepPrefixAt=true --expect-exactly expects/prefix-tag1.json
 
+  test-spec-parameter:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+
+      - name: Do not eliminate --specs 🧪
+        uses: cypress-io/github-action@v5
+        env:
+          DEBUG: cy-grep
+          # the same pattern as --spec
+          CYPRESS_grepSpec: cypress/e2e/spec-parameter/a.cy.js
+        with:
+          # https://github.com/bahmutov/cy-grep/issues/33
+          command: |
+            npx cypress-expect run \
+              --config specPattern=cypress/e2e/spec-parameter/*.cy.js \
+              --spec cypress/e2e/spec-parameter/a.cy.js \
+              --env grepTags=@b,grepFilterSpecs=true \
+              --expect-exactly expects/spec-parameter.json
+
   test-one-spec-filter:
     runs-on: ubuntu-20.04
     steps:
@@ -256,6 +277,7 @@ jobs:
         test-cypress-v9-required-tags,
         test-parent-suite-name,
         test-prefix-tags,
+        test-spec-parameter,
       ]
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/main'

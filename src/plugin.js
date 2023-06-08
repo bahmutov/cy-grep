@@ -7,6 +7,9 @@ const fs = require('fs')
 const path = require('path')
 const { version } = require('../package.json')
 const { parseGrep, shouldTestRun, getMentionedTags } = require('./utils')
+const minimatch = require('minimatch')
+
+const MINIMATCH_OPTIONS = { dot: true, matchBase: true }
 
 const isCypressV9 = (config) => !('specPattern' in config)
 
@@ -73,10 +76,22 @@ function cypressGrepPlugin(config) {
     getGrepSettings(config)
 
   if (grepFilterSpecs) {
-    const specFiles = getSpecs(config)
+    let specFiles = getSpecs(config)
 
-    debug('found %d spec files', specFiles.length)
+    debug('found %d spec file(s)', specFiles.length)
     debug('%o', specFiles)
+    const specPattern = config.env.grepSpec || config.env.grepSpecs
+    if (specPattern) {
+      debug('custom spec pattern: %s', specPattern)
+      // https://github.com/bahmutov/cy-grep/issues/33
+      // the user set a custom "--spec <...>" parameter to select specs to run
+      // so we need to pre-filter all found specFiles
+      specFiles = specFiles.filter((specFilename) =>
+        minimatch(specFilename, specPattern, MINIMATCH_OPTIONS),
+      )
+      debug('pre-filtered specs %d %o', specFiles.length, specFiles)
+    }
+
     let greppedSpecs = []
 
     if (grep) {
