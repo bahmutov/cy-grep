@@ -18,7 +18,7 @@
     "find-test-names": "1.28.12"
   },
   "devDependencies": {
-    "cypress": "12.15.0",
+    "cypress": "12.17.4",
     "cypress-each": "^1.11.0",
     "cypress-expect": "^3.1.0",
     "prettier": "^2.8.1",
