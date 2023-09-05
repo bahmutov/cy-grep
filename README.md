@@ -145,6 +145,19 @@ module.exports = defineConfig({
 })
 ```
 
+Trying to call the plugin function without any arguments or with more than a single argument throws an error
+
+```js
+// ERROR: forgot the config file
+setupNodeEvents(on, config) {
+  require('@bahmutov/cy-grep/src/plugin')();
+}
+// ERROR: too many arguments
+setupNodeEvents(on, config) {
+  require('@bahmutov/cy-grep/src/plugin')(on, config);
+}
+```
+
 ### Install in Cypress versions before 10
 
 See [test-cy-v9](./test-cy-v9/) for example

@@ -68,6 +68,17 @@ function getGrepSettings(config) {
  * @param {Cypress.ConfigOptions} config
  */
 function cypressGrepPlugin(config) {
+  if (arguments.length === 0) {
+    throw new Error(
+      'ERROR: forgot the config file, see https://github.com/bahmutov/cy-grep',
+    )
+  }
+  if (arguments.length > 1) {
+    throw new Error(
+      'ERROR: too many arguments, see https://github.com/bahmutov/cy-grep',
+    )
+  }
+
   if (!config || !config.env) {
     return config
   }
