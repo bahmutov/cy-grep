@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Run Cypress tests 🧪
         # https://github.com/cypress-io/github-action
@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: check dependencies 📦
         # only confirm the prod dependencies are good
         run: npm run deps
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Run single tag 🧪
         uses: cypress-io/github-action@v5
@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Run single tag 🧪
         uses: cypress-io/github-action@v5
@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Do not eliminate --specs 🧪
         uses: cypress-io/github-action@v5
@@ -72,7 +72,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Run single tag 🧪
         uses: cypress-io/github-action@v5
@@ -86,7 +86,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Run tests for "projects" 🧪
         uses: cypress-io/github-action@v5
@@ -111,7 +111,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Run single tag 🧪
         uses: cypress-io/github-action@v5
@@ -125,7 +125,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Cypress 🧪
         uses: cypress-io/github-action@v5
@@ -149,7 +149,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Cypress 🧪
         uses: cypress-io/github-action@v5
@@ -168,7 +168,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Cypress 🧪
         uses: cypress-io/github-action@v5
@@ -192,7 +192,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Cypress 🧪
         uses: cypress-io/github-action@v5
@@ -210,7 +210,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install dependencies 🧪
         uses: cypress-io/github-action@v5
@@ -240,7 +240,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install dependencies 🧪
         uses: cypress-io/github-action@v5
@@ -283,7 +283,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install only the semantic release 📦
         run: npm install semantic-release
