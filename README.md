@@ -708,6 +708,7 @@ To see how to debug this plugin, watch the video [Debug cypress-grep Plugin](htt
 - [cypress-select-tests](https://github.com/bahmutov/cypress-select-tests)
 - [cypress-skip-test](https://github.com/cypress-io/cypress-skip-test)
 - 📝 Read the blog post [Cypress GitHub Actions Slash Command](https://glebbahmutov.com/blog/cypress-slash-command/)
+- plugin [dennisbergevin/cypress-plugin-last-failed](https://github.com/dennisbergevin/cypress-plugin-last-failed)
 
 ## cy-grep vs cypress-grep vs @cypress/grep
 
