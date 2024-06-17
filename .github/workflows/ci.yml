@@ -9,7 +9,7 @@ jobs:
 
       - name: Run Cypress tests 🧪
         # https://github.com/cypress-io/github-action
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           build: npm run stop-only
           config: 'specPattern=**/unit.js'
@@ -31,7 +31,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run single tag 🧪
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           command: npx cypress-expect run --env grepTags=@tag1 --expect-exactly expects/tag1.json
 
@@ -42,7 +42,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run single tag 🧪
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           # the plugin should automatically prefix tags with "@" character
           command: npx cypress-expect run --env grepTags=tag1,grepPrefixAt=true --expect-exactly expects/prefix-tag1.json
@@ -54,7 +54,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Do not eliminate --specs 🧪
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         env:
           DEBUG: cy-grep
           # the same pattern as --spec
@@ -75,12 +75,23 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run single tag 🧪
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           command: npx cypress-expect run \
             --env grepTags=A,grepFilterSpecs=true,grepOmitFiltered=true \
             --config specPattern=cypress/e2e/effective-tags/*.js \
             --expect-exactly expects/effective-tags/spec-a.json
+
+  test-has-access-to-its-test-tags:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v4
+
+      - name: Run tests for "projects" 🧪
+        uses: cypress-io/github-action@v6
+        with:
+          command: npx cypress open --e2e -b electron --config specPattern='cypress/e2e/test-tags/*.cy.js'
 
   test-parent-suite-name:
     runs-on: ubuntu-20.04
@@ -89,7 +100,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run tests for "projects" 🧪
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           # the "projects" word is in the parent suite title
           command: npx cypress-expect run \
@@ -98,7 +109,7 @@ jobs:
             --expect-exactly expects/negative-grep-projects.json
 
       - name: Run tests without "projects" 🧪
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           # should skip tests inside the suite "projects"
           command: npx cypress-expect run \
@@ -114,7 +125,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run single tag 🧪
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           command: npx cypress-expect run \
             --env grepTags=A+smoke,grepFilterSpecs=true,grepOmitFiltered=true \
@@ -128,7 +139,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Cypress 🧪
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           runTests: false
 
@@ -152,7 +163,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Cypress 🧪
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           runTests: false
 
@@ -171,7 +182,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Cypress 🧪
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           runTests: false
 
@@ -195,7 +206,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install Cypress 🧪
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           runTests: false
 
@@ -213,12 +224,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install dependencies 🧪
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           runTests: false
 
       - name: Install Cypress v9 dependencies 🧪
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           working-directory: ./test-cy-v9
           cache-key: cy-v9-${{ hashFiles('package-lock.json') }}
@@ -243,12 +254,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install dependencies 🧪
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           runTests: false
 
       - name: Install Cypress v9 dependencies 🧪
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         with:
           working-directory: ./test-cy-v9-required-tags
           cache-key: cy-v9-${{ hashFiles('package-lock.json') }}
@@ -278,6 +289,7 @@ jobs:
         test-parent-suite-name,
         test-prefix-tags,
         test-spec-parameter,
+        test-has-access-to-its-test-tags,
       ]
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/main'
@@ -285,11 +297,17 @@ jobs:
       - name: Checkout 🛎
         uses: actions/checkout@v4
 
+      - name: Use Node 20+
+        # https://github.com/actions/setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Install only the semantic release 📦
         run: npm install semantic-release
 
       - name: Semantic Release 🚀
-        uses: cycjimmy/semantic-release-action@v3
+        uses: cycjimmy/semantic-release-action@v4
         with:
           branch: main
         env:

@@ -8,7 +8,10 @@ it('works', () => {})
 
 it('works 2 @tag1', { tags: '@tag1' }, () => {})
 
-it('works 2 @tag1 @tag2', { tags: ['@tag1', '@tag2'] }, () => {})
+it('works 2 @tag1 @tag2', { tags: ['@tag1', '@tag2'] }, () => {
+  // confirm we have test tags
+  expect(Cypress.env('testTags'), 'test tags').to.deep.equal(['@tag1', '@tag2'])
+})
 
 it('works @tag2', { tags: '@tag2' }, () => {})
 
