@@ -91,7 +91,7 @@ jobs:
       - name: Run tests for "projects" 🧪
         uses: cypress-io/github-action@v6
         with:
-          command: npx cypress run --e2e -b electron --config specPattern='cypress/e2e/test-tags/*.cy.js'
+          config: 'specPattern="cypress/e2e/test-tags/*.cy.js"'
 
   test-parent-suite-name:
     runs-on: ubuntu-20.04
