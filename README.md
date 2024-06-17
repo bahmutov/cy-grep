@@ -55,6 +55,7 @@ Watch the video [intro to cypress-grep plugin](https://www.youtube.com/watch?v=H
     - [NOT tags](#not-tags)
     - [Tags in test suites](#tags-in-test-suites)
     - [Grep untagged tests](#grep-untagged-tests)
+    - [Access the tags in the test](#access-the-tags-in-the-test)
   - [Pre-filter specs (grepFilterSpecs)](#pre-filter-specs-grepfilterspecs)
   - [Omit filtered tests (grepOmitFiltered)](#omit-filtered-tests-grepomitfiltered)
   - [Disable grep](#disable-grep)
@@ -405,6 +406,22 @@ Sometimes you want to run only the tests without any tags, and these tests are i
 
 ```
 $ npx cypress run --env grepUntagged=true
+```
+
+### Access the tags in the test
+
+You can check the current test's tags (including its parent suites) by checking the `Cypress.env('testTags')` list
+
+```js
+describe('parent', { tags: ['@p1', '@p2'] }, () => {
+  describe('child', { tags: '@c1' }, () => {
+    it('has all effective test tags', { tags: '@t1' }, () => {
+      const tags = Cypress.env('testTags')
+      // includes tags from the parent suites and the test itself
+      expect(tags, 'tags').to.deep.equal(['@p1', '@p2', '@c1', '@t1'])
+    })
+  })
+})
 ```
 
 ## Pre-filter specs (grepFilterSpecs)
