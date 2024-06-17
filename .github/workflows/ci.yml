@@ -82,6 +82,17 @@ jobs:
             --config specPattern=cypress/e2e/effective-tags/*.js \
             --expect-exactly expects/effective-tags/spec-a.json
 
+  test-has-access-to-its-test-tags:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v4
+
+      - name: Run tests for "projects" 🧪
+        uses: cypress-io/github-action@v6
+        with:
+          command: npx cypress open --e2e -b electron --config specPattern='cypress/e2e/test-tags/*.cy.js'
+
   test-parent-suite-name:
     runs-on: ubuntu-20.04
     steps:
@@ -278,6 +289,7 @@ jobs:
         test-parent-suite-name,
         test-prefix-tags,
         test-spec-parameter,
+        test-has-access-to-its-test-tags,
       ]
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/main'
