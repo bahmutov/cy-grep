@@ -16,6 +16,22 @@ debug.log = console.info.bind(console)
 // preserve the real "it" function
 const _it = it
 const _describe = describe
+// keeps all collected test tags by the full test title
+// includes both the test tags and the suite tags
+// and the required test tags
+const testTree = {}
+
+beforeEach(() => {
+  // set the test tags for the current test
+  const testTitle = Cypress.currentTest.titlePath.join(' ')
+  const info = testTree[testTitle]
+  if (info) {
+    const allTags = info.effectiveTestTags.concat(info.requiredTestTags)
+    Cypress.env('testTags', allTags)
+  } else {
+    Cypress.env('testTags', null)
+  }
+})
 
 /**
  * Wraps the "it" and "describe" functions that support tags.
@@ -122,6 +138,7 @@ function registerCyGrep() {
       .concat(configRequiredTags)
       .filter(Boolean)
     debug({ nameToGrep, effectiveTestTags, requiredTestTags })
+    testTree[nameToGrep] = { effectiveTestTags, requiredTestTags }
 
     const shouldRun = shouldTestRun(
       parsedGrep,
