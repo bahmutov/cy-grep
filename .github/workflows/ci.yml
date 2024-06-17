@@ -274,9 +274,10 @@ jobs:
         working-directory: ./test-cy-v9-required-tags
 
   release:
-    needs:
-      [
-        dependencies,
+    needs: [
+        # comment out for now, need to wait for the new version
+        # of @babel/traverse, see command "npm run deps"
+        # dependencies,
         test,
         test-one-tag,
         test-one-spec-filter,
