@@ -60,6 +60,7 @@ Watch the video [intro to cypress-grep plugin](https://www.youtube.com/watch?v=H
   - [Omit filtered tests (grepOmitFiltered)](#omit-filtered-tests-grepomitfiltered)
   - [Disable grep](#disable-grep)
   - [Burn (repeat) tests](#burn-repeat-tests)
+  - [grepExtraSpecs](#grepextraspecs)
   - [Required tags](#required-tags)
   - [Negative grep](#negative-grep)
   - [TypeScript support](#typescript-support)
@@ -504,6 +505,14 @@ npx cypress run --env grep="hello world",burn=5
 You can pass the number of times to run the tests via environment name `burn` or `grepBurn` or `grep-burn`. Note, if a lot of tests match the grep and grep tags, a lot of tests will be burnt!
 
 If you do not specify the "grep" or "grep tags" option, the "burn" will repeat _every_ test.
+
+## grepExtraSpecs
+
+Sometimes you want to pre-filter specs using tags AND then run extra specs without any filtering. You can set the list of specs / patterns using the `grepExtraSpecs` env string. For example, to filter specs using tag `@a` plus run the spec "b.cy.js":
+
+```
+npx cypress run --env grepTags=@a,grepExtraSpecs=cypress/e2e/b.cy.js
+```
 
 ## Required tags
 
