@@ -79,7 +79,7 @@ jobs:
         uses: cypress-io/github-action@v6
         env:
           DEBUG: cy-grep
-          CYPRESS_grepExtraSpecs: cypress/e2e/extra-specs/b.cy.js
+          CYPRESS_grepExtraSpecs: cypress/e2e/extra-specs/*.cy.js
         with:
           # https://github.com/bahmutov/cy-grep/issues/33
           command: |
