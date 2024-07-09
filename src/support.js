@@ -58,6 +58,8 @@ function registerCyGrep() {
     getPluginConfigValue('grepUntagged') ||
     getPluginConfigValue('grep-untagged')
 
+  const extraSpecs = getPluginConfigValue('grepExtraSpecs')
+
   // if (!grep && !grepTags && !burnSpecified && !grepUntagged) {
   // nothing to do, the user has no specified the "grep" string
   // debug('Nothing to grep, version %s', version)
@@ -123,6 +125,11 @@ function registerCyGrep() {
     let configRequiredTags = options && options.requiredTags
     if (typeof configRequiredTags === 'string') {
       configRequiredTags = [configRequiredTags]
+    }
+
+    if (extraSpecs?.length && extraSpecs.includes(Cypress.spec.relative)) {
+      // the user wants to run all tests in this extra spec file
+      return _it(name, options, callback)
     }
 
     const nameToGrep = suiteStack

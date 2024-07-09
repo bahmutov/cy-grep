@@ -7,6 +7,7 @@ const fs = require('fs')
 const path = require('path')
 const { version } = require('../package.json')
 const { parseGrep, shouldTestRun, getMentionedTags } = require('./utils')
+const { resolveFilePatterns } = require('./file-utils')
 const minimatch = require('minimatch')
 
 const MINIMATCH_OPTIONS = { dot: true, matchBase: true }
@@ -222,6 +223,23 @@ function cypressGrepPlugin(config) {
           return true
         }
       })
+    }
+
+    const extraSpecsPattern = config.env.grepExtraSpecs
+    if (extraSpecsPattern) {
+      debug('processing the extra specs pattern "%s"', extraSpecsPattern)
+      const extraSpecs = resolveFilePatterns(extraSpecsPattern)
+      // update the config env object with resolved extra specs
+      const resolvedExtraSpecs = []
+      extraSpecs.forEach((specFilename) => {
+        if (!greppedSpecs.includes(specFilename)) {
+          greppedSpecs.push(specFilename)
+          resolvedExtraSpecs.push(specFilename)
+          debug('added extra spec %s', specFilename)
+        }
+      })
+
+      config.env.grepExtraSpecs = resolvedExtraSpecs
     }
 
     if (greppedSpecs.length) {

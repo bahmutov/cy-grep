@@ -1,0 +1,14 @@
+{
+  "cypress": {
+    "e2e": {
+      "extra-specs": {
+        "a.cy.js": {
+          "works A": "passing"
+        },
+        "b.cy.js": {
+          "works B": "passing"
+        }
+      }
+    }
+  }
+}
