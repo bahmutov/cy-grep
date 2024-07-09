@@ -224,6 +224,23 @@ function cypressGrepPlugin(config) {
       })
     }
 
+    const extraSpecsPattern = config.env.grepExtraSpecs
+    if (extraSpecsPattern) {
+      debug('processing the extra specs pattern "%s"', extraSpecsPattern)
+      const extraSpecsList = extraSpecsPattern
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean)
+      debug('extra specs list %o', extraSpecsList)
+      extraSpecsList.forEach((extraSpecPattern) => {
+        // assume for now that the pattern is a filename, not a wildcard
+        if (!greppedSpecs.includes(extraSpecPattern)) {
+          greppedSpecs.push(extraSpecPattern)
+          debug('added extra spec %s', extraSpecPattern)
+        }
+      })
+    }
+
     if (greppedSpecs.length) {
       if (isCypressV9(config)) {
         debug('setting selected %d specs (< v10)', greppedSpecs.length)
