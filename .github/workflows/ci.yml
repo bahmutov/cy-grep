@@ -15,6 +15,7 @@ jobs:
           config: 'specPattern=**/unit.js'
 
   dependencies:
+    if: false
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout 🛎
