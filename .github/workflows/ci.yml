@@ -2,7 +2,7 @@ name: ci
 on: push
 jobs:
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
@@ -16,7 +16,7 @@ jobs:
 
   dependencies:
     if: false
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
@@ -26,7 +26,7 @@ jobs:
 
   # TODO: run all e2e tests against the expected results
   test-one-tag:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
@@ -37,7 +37,7 @@ jobs:
           command: npx cypress-expect run --env grepTags=@tag1 --expect-exactly expects/tag1.json
 
   test-prefix-tags:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
@@ -49,7 +49,7 @@ jobs:
           command: npx cypress-expect run --env grepTags=tag1,grepPrefixAt=true --expect-exactly expects/prefix-tag1.json
 
   test-spec-parameter:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
@@ -70,7 +70,7 @@ jobs:
               --expect-exactly expects/spec-parameter.json
 
   test-extra-specs:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
@@ -89,7 +89,7 @@ jobs:
               --expect-exactly expects/extra-specs.json
 
   test-one-spec-filter:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
@@ -103,7 +103,7 @@ jobs:
             --expect-exactly expects/effective-tags/spec-a.json
 
   test-has-access-to-its-test-tags:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
@@ -114,7 +114,7 @@ jobs:
           config: 'specPattern="cypress/e2e/test-tags/*.cy.js"'
 
   test-parent-suite-name:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
@@ -139,7 +139,7 @@ jobs:
 
   # https://github.com/bahmutov/cy-grep/issues/4
   test-effective-tags-AND-filter:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
@@ -153,7 +153,7 @@ jobs:
             --expect-exactly expects/effective-tags/spec-a-smoke.json
 
   test-required-tags:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
@@ -177,7 +177,7 @@ jobs:
             --expect-exactly ./tests/required-tags/expect-with-required-tag.json
 
   test-tag-not-found:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
@@ -196,7 +196,7 @@ jobs:
             --expect-exactly ./tests/required-tags/expect-all.json
 
   test-required-tags-only:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
@@ -220,7 +220,7 @@ jobs:
             --expect-exactly ./tests/required-tags-only/expect-scrape.json
 
   test-required-tags-parent-suite:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
@@ -238,7 +238,7 @@ jobs:
             --expect-exactly ./tests/required-tags-suite/expect-scrape.json
 
   test-cypress-v9:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
@@ -268,7 +268,7 @@ jobs:
         working-directory: ./test-cy-v9
 
   test-cypress-v9-required-tags:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
@@ -313,7 +313,7 @@ jobs:
         test-has-access-to-its-test-tags,
         test-extra-specs,
       ]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout 🛎
