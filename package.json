@@ -16,7 +16,7 @@
     "cypress-plugin-config": "^1.2.0",
     "debug": "^4.3.2",
     "find-cypress-specs": "^1.35.1",
-    "find-test-names": "1.28.22",
+    "find-test-names": "1.28.30",
     "globby": "^11.1.0"
   },
   "devDependencies": {
