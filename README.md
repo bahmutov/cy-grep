@@ -30,6 +30,9 @@ Watch the video [intro to cypress-grep plugin](https://www.youtube.com/watch?v=H
 - [Lesson k5: Filter the tests to run using OR of several tags](https://cypress.tips/courses/cypress-plugins/lessons/k5)
 - [Lesson k6: Repeat selected tests N times](https://cypress.tips/courses/cypress-plugins/lessons/k6)
 - [Lesson k7: Pick the tests to run in the interactive mode](https://cypress.tips/courses/cypress-plugins/lessons/k7)
+- [Lesson k8: Automatically prefix tags with the "@" character](https://cypress.tips/courses/cypress-plugins/lessons/k8)
+- [Lesson k9: Set baseUrl depending on the test tag](https://cypress.tips/courses/cypress-plugins/lessons/k9)
+- [Lesson k10: Limit test tags to specific values](https://cypress.tips/courses/cypress-plugins/lessons/k10)
 
 ## Table of Contents
 
