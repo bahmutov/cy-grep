@@ -79,6 +79,8 @@ Watch the video [intro to cypress-grep plugin](https://www.youtube.com/watch?v=H
   - [Examples](#examples)
   - [See also](#see-also)
   - [cy-grep vs cypress-grep vs @cypress/grep](#cy-grep-vs-cypress-grep-vs-cypressgrep)
+  - [Major migrations](#major-migrations)
+    - [v1 to v2](#v1-to-v2)
   - [Small Print](#small-print)
 
 <!-- /MarkdownTOC -->
@@ -562,23 +564,41 @@ it('runs on deploy', { tags: 'smoke' }, () => {
 })
 ```
 
-This package comes with [src/index.d.ts](./src/index.d.ts) definition file that adds the property `tags` to the Cypress test overrides interface. Include this file in your specs or TS config settings. For example, you can load it using a reference comment
-
-```js
-// cypress/integration/my-spec.js
-/// <reference types="@bahmutov/cy-grep" />
-```
-
-If you have `tsconfig.json` file, add this library to the types list
+If you want to allow any strings to be test tags, simply include [src/tags-are-strings.d.ts](./src/tags-are-strings.d.ts) included with this package in your project TS config:
 
 ```json
 {
+  "include": [
+    "cypress/**/*",
+    "node_modules/@bahmutov/cy-grep/src/tags-are-strings.d.ts"
+  ],
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["es5", "dom"],
     "types": ["cypress", "@bahmutov/cy-grep"]
-  },
-  "include": ["**/*.ts"]
+  }
+}
+```
+
+If you want to provide your _own_ list of allowed tags, create a `.d.ts` file or extend your `index.d.ts` file
+
+```ts
+// your project's index.d.ts file
+/// <reference types="cypress" />
+
+/**
+ * The only allowed test tags in this project
+ */
+type AllowedTag = '@smoke' | '@misc' | '@new-todo'
+
+declare namespace Cypress {
+  interface SuiteConfigOverrides {
+    tags?: AllowedTag | AllowedTag[]
+    requiredTags?: AllowedTag | AllowedTag[]
+  }
+
+  interface TestConfigOverrides {
+    tags?: AllowedTag | AllowedTag[]
+    requiredTags?: AllowedTag | AllowedTag[]
+  }
 }
 ```
 
@@ -744,6 +764,45 @@ To see how to debug this plugin, watch the video [Debug cypress-grep Plugin](htt
 Many years ago I wrote a plugin `cypress-grep`. When I left the company Cypress, I transferred that MIT-licensed plugin to the Cypress GitHub organization. They moved it to the Cypress monorepo and renamed the NPM module `@cypress/grep`. I still use this grep plugin in some projects. When Cypress v10 was released, it broke some of the things in the plugin. Since I needed to fix it quickly and the monorepo setup is suboptimal, I forked the plugin back to my own repo `bahmutov/cy-grep` (this repo) and released under NPM name `@bahmutov/cy-grep`.
 
 I plan to maintain the plugin `@bahmutov/cy-grep` in the future, since I rely on it myself **a lot**.
+
+## Major migrations
+
+### v1 to v2
+
+Adding a type for `tags` and `requiredTags` moved from default to its own `.d.ts` file.
+
+**v1**
+
+For example, the plugin `@bahmutov/cy-grep@v1` simply could add itself to the `types` list in your `tsconfig.json` / `jsconfig.json` file
+
+```json
+{
+  "include": ["cypress/**/*"],
+  "compilerOptions": {
+    "types": ["cypress", "@bahmutov/cy-grep"]
+  }
+}
+```
+
+This made `tags` property a string, so you could use `it('works', { tags: '@smoke' }, () => ...)`
+
+**v2**
+
+If you want to use _any_ strings as tags, you need to add the file [src/tags-are-strings.d.ts](./src/tags-are-strings.d.ts)
+
+```json
+{
+  "include": [
+    "cypress/**/*",
+    "node_modules/@bahmutov/cy-grep/src/tags-are-strings.d.ts"
+  ],
+  "compilerOptions": {
+    "types": ["cypress", "@bahmutov/cy-grep"]
+  }
+}
+```
+
+**Note:** you still want to include the `@bahmutov/cy-grep` default types, since they provide additional static methods, like `Cypress.grep`
 
 ## Small Print
 
