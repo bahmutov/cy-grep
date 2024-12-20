@@ -33,6 +33,8 @@ Watch the video [intro to cypress-grep plugin](https://www.youtube.com/watch?v=H
 - [Lesson k8: Automatically prefix tags with the "@" character](https://cypress.tips/courses/cypress-plugins/lessons/k8)
 - [Lesson k9: Set baseUrl depending on the test tag](https://cypress.tips/courses/cypress-plugins/lessons/k9)
 - [Lesson k10: Limit test tags to specific values](https://cypress.tips/courses/cypress-plugins/lessons/k10)
+- [Lesson k11: Use TypeScript enum for test tags](https://cypress.tips/courses/cypress-plugins/lessons/k11)
+- [Lesson k12: Validate user-supplied test tags](https://cypress.tips/courses/cypress-plugins/lessons/k12)
 
 ## Table of Contents
 
