@@ -181,7 +181,12 @@ function registerCyGrep() {
 
     if (omitFiltered) {
       // omit the filtered tests completely
-      return
+      // in order to be compatible with Mocha, create fake method and test object
+      return {
+        parent: {
+          appendOnlyTest: () => {},
+        },
+      }
     }
 
     // skip tests without grep string in their names
