@@ -762,6 +762,7 @@ To see how to debug this plugin, watch the video [Debug cypress-grep Plugin](htt
 - 📝 Read the blog post [Type Check Your Test Tags](https://glebbahmutov.com/blog/type-check-test-tags/)
 - plugin [dennisbergevin/cypress-plugin-last-failed](https://github.com/dennisbergevin/cypress-plugin-last-failed)
 - plugin [dennisbergevin/cypress-cli-select](https://github.com/dennisbergevin/cypress-cli-select)
+- plugin [dennisbergevin/cypress-plugin-grep-boxes](https://github.com/dennisbergevin/cypress-plugin-grep-boxes)
 
 ## cy-grep vs cypress-grep vs @cypress/grep
 
