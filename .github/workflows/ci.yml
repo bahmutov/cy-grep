@@ -88,6 +88,25 @@ jobs:
               --env grepTags=@a,grepFilterSpecs=true \
               --expect-exactly expects/extra-specs.json
 
+  test-extra-specs-comma-list:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v4
+
+      - name: Run extra specs without filtering 🧪
+        uses: cypress-io/github-action@v6
+        env:
+          DEBUG: cy-grep
+          CYPRESS_grepExtraSpecs: cypress/e2e/extra-specs/a.cy.js,cypress/e2e/extra-specs/b.cy.js
+        with:
+          # https://github.com/bahmutov/cy-grep/issues/33
+          command: |
+            npx cypress-expect run \
+              --config specPattern=cypress/e2e/extra-specs/*.cy.js \
+              --env grepTags=@a,grepFilterSpecs=true \
+              --expect-exactly expects/extra-specs.json
+
   test-one-spec-filter:
     runs-on: ubuntu-24.04
     steps:
@@ -312,6 +331,7 @@ jobs:
         test-spec-parameter,
         test-has-access-to-its-test-tags,
         test-extra-specs,
+        test-extra-specs-comma-list,
       ]
     runs-on: ubuntu-24.04
     if: github.ref == 'refs/heads/main'
