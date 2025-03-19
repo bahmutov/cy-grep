@@ -155,17 +155,20 @@ function cypressGrepPlugin(config) {
           // and the values being arrays of effective test tags
           debug('spec file %s', specFile)
           debug('effective test tags %o', testTags)
+
+          // remember all found tags
+          Object.entries(testTags).forEach(([testTitle, tags]) => {
+            tags.effectiveTags.forEach((tag) => {
+              foundTags.add(tag)
+            })
+            tags.requiredTags.forEach((tag) => {
+              foundTags.add(tag)
+            })
+          });
+
           return Object.keys(testTags).some((testTitle) => {
             const effectiveTags = testTags[testTitle].effectiveTags
             const requiredTags = testTags[testTitle].requiredTags
-
-            // remember all found tags
-            effectiveTags.forEach((tag) => {
-              foundTags.add(tag)
-            })
-            requiredTags.forEach((tag) => {
-              foundTags.add(tag)
-            })
 
             return shouldTestRun(
               parsedGrep,
