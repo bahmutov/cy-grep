@@ -20,7 +20,7 @@
     "globby": "^11.1.0"
   },
   "devDependencies": {
-    "cypress": "14.2.1",
+    "cypress": "14.3.0",
     "cypress-each": "^1.11.0",
     "cypress-expect": "^3.1.0",
     "prettier": "^3.0.0",
