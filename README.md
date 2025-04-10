@@ -36,6 +36,8 @@ Watch the video [intro to cypress-grep plugin](https://www.youtube.com/watch?v=H
 - [Lesson k11: Use TypeScript enum for test tags](https://cypress.tips/courses/cypress-plugins/lessons/k11)
 - [Lesson k12: Validate user-supplied test tags](https://cypress.tips/courses/cypress-plugins/lessons/k12)
 
+Combine this plugin with [cypress-split](https://github.com/bahmutov/cypress-split) plugin to first pre-filter specs, then run them in parallel: lesson [Lesson c2: Combine split and grep](https://cypress.tips/courses/cypress-split/lessons/c2) from my course [Cypress-split plugin](https://cypress.tips/courses/cypress-split).
+
 ## Table of Contents
 
 <!-- MarkdownTOC autolink="true" -->
