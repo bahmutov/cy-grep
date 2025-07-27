@@ -1,4 +1,4 @@
-# @bahmutov/cy-grep ![cypress version](https://img.shields.io/badge/cypress-14.5.2-brightgreen)
+# @bahmutov/cy-grep ![cypress version](https://img.shields.io/badge/cypress-14.5.3-brightgreen)
 
 > Filter tests using substring or tag
 
