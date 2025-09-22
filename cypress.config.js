@@ -1,6 +1,9 @@
 const { defineConfig } = require('cypress')
 
 module.exports = defineConfig({
+  // testing a bug
+  // https://github.com/bahmutov/cy-grep/issues/203
+  experimentalStudio: true,
   e2e: {
     defaultCommandTimeout: 1000,
     setupNodeEvents(on, config) {
