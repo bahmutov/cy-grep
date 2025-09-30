@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Run Cypress tests 🧪
         # https://github.com/cypress-io/github-action
@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: check dependencies 📦
         # only confirm the prod dependencies are good
         run: npm run deps
@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Run single tag 🧪
         uses: cypress-io/github-action@v6
@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Run single tag 🧪
         uses: cypress-io/github-action@v6
@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Do not eliminate --specs 🧪
         uses: cypress-io/github-action@v6
@@ -73,7 +73,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Run extra specs without filtering 🧪
         uses: cypress-io/github-action@v6
@@ -92,7 +92,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Run extra specs without filtering 🧪
         uses: cypress-io/github-action@v6
@@ -111,7 +111,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Run single tag 🧪
         uses: cypress-io/github-action@v6
@@ -125,7 +125,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Run tests for "projects" 🧪
         uses: cypress-io/github-action@v6
@@ -136,7 +136,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Run tests for "projects" 🧪
         uses: cypress-io/github-action@v6
@@ -161,7 +161,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Run single tag 🧪
         uses: cypress-io/github-action@v6
@@ -175,7 +175,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install Cypress 🧪
         uses: cypress-io/github-action@v6
@@ -199,7 +199,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install Cypress 🧪
         uses: cypress-io/github-action@v6
@@ -218,7 +218,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install Cypress 🧪
         uses: cypress-io/github-action@v6
@@ -242,7 +242,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install Cypress 🧪
         uses: cypress-io/github-action@v6
@@ -260,7 +260,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install dependencies 🧪
         uses: cypress-io/github-action@v6
@@ -290,7 +290,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install dependencies 🧪
         uses: cypress-io/github-action@v6
@@ -337,7 +337,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Use Node 20+
         # https://github.com/actions/setup-node
