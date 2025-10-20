@@ -434,6 +434,44 @@ describe('parent', { tags: ['@p1', '@p2'] }, () => {
 })
 ```
 
+Additionally, you can check both tags and required tags for each test within the current spec by checking the `Cypress.env('specTags')` object
+
+See [spec.js](./cypress/e2e/spec.js) for practical test spec example.
+
+Example output:
+
+```js
+{
+    "hello world": {
+        "effectiveTestTags": [],
+        "requiredTestTags": []
+    },
+    "works": {
+        "effectiveTestTags": [],
+        "requiredTestTags": []
+    },
+    "works 2 @tag1": {
+        "effectiveTestTags": [
+            "@tag1"
+        ],
+        "requiredTestTags": []
+    },
+    "works 2 @tag1 @tag2": {
+        "effectiveTestTags": [
+            "@tag1",
+            "@tag2"
+        ],
+        "requiredTestTags": []
+    },
+    "works @tag2": {
+        "effectiveTestTags": [
+            "@tag2"
+        ],
+        "requiredTestTags": []
+    }
+}
+```
+
 ## Pre-filter specs (grepFilterSpecs)
 
 By default, when using `grep` and `grepTags` all specs are executed, and inside each the filters are applied. This can be very wasteful, if only a few specs contain the `grep` in the test titles. Thus when doing the positive `grep`, you can pre-filter specs using the `grepFilterSpecs=true` parameter.
