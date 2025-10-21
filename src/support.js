@@ -20,6 +20,10 @@ const _describe = describe
 // includes both the test tags and the suite tags
 // and the required test tags
 const testTree = {}
+// keeps all collected test tags by the individual test title
+// includes both the test tags and the suite tags
+// used to expose within a Cypress environment variable
+const modifiedTestTree = {}
 
 beforeEach(() => {
   // set the test tags for the current test
@@ -136,6 +140,10 @@ function registerCyGrep() {
       .map((item) => item.name)
       .concat(name)
       .join(' ')
+    const nameOfTest = suiteStack
+      .map((item) => item.name)
+      .concat(name)
+      .pop()
     const effectiveTestTags = suiteStack
       .flatMap((item) => item.tags)
       .concat(configTags)
@@ -146,6 +154,11 @@ function registerCyGrep() {
       .filter(Boolean)
     debug({ nameToGrep, effectiveTestTags, requiredTestTags })
     testTree[nameToGrep] = { effectiveTestTags, requiredTestTags }
+
+    // Store the tags by individual name of test
+    // Expose the object within the Cypress environment variables
+    modifiedTestTree[nameOfTest] = { effectiveTestTags, requiredTestTags }
+    Cypress.env('specTags', modifiedTestTree)
 
     const shouldRun = shouldTestRun(
       parsedGrep,
