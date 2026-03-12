@@ -476,7 +476,7 @@ Example output:
 
 By default, when using `grep` and `grepTags` all specs are executed, and inside each the filters are applied. This can be very wasteful, if only a few specs contain the `grep` in the test titles. Thus when doing the positive `grep`, you can pre-filter specs using the `grepFilterSpecs=true` parameter.
 
-```
+```shell
 # filter all specs first, and only run the ones with
 # suite or test titles containing the string "it loads"
 $ npx cypress run --expose grep="it loads",grepFilterSpecs=true

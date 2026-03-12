@@ -226,7 +226,9 @@ function cypressGrepPlugin(config) {
       })
     }
 
-    const extraSpecsPattern = config.expose.grepExtraSpecs
+    // grab the extra specs from either "env" or "expose" objects
+    const extraSpecsPattern =
+      config.env?.grepExtraSpecs || config.expose?.grepExtraSpecs
     if (extraSpecsPattern) {
       debug('processing the extra specs pattern "%s"', extraSpecsPattern)
       const extraSpecs = resolveFilePatterns(extraSpecsPattern)
