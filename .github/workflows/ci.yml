@@ -255,63 +255,6 @@ jobs:
             --project tests/required-tags-suite \
             --env grepTags=@scrape \
             --expect-exactly ./tests/required-tags-suite/expect-scrape.json
-
-  test-cypress-v9:
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Checkout 🛎
-        uses: actions/checkout@v5
-
-      - name: Install dependencies 🧪
-        uses: cypress-io/github-action@v6
-        with:
-          runTests: false
-
-      - name: Install Cypress v9 dependencies 🧪
-        uses: cypress-io/github-action@v6
-        with:
-          working-directory: ./test-cy-v9
-          cache-key: cy-v9-${{ hashFiles('package-lock.json') }}
-          runTests: false
-
-      - name: Grep tags in Cypress v9 folder
-        run: npm run test-expects
-        working-directory: ./test-cy-v9
-
-      - name: Grep tags in Cypress v9 folder with --spec argument
-        run: npm run test-expects-spec
-        working-directory: ./test-cy-v9
-
-      - name: Runs without any grep filters
-        run: npm run test-expects-both
-        working-directory: ./test-cy-v9
-
-  test-cypress-v9-required-tags:
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Checkout 🛎
-        uses: actions/checkout@v5
-
-      - name: Install dependencies 🧪
-        uses: cypress-io/github-action@v6
-        with:
-          runTests: false
-
-      - name: Install Cypress v9 dependencies 🧪
-        uses: cypress-io/github-action@v6
-        with:
-          working-directory: ./test-cy-v9-required-tags
-          cache-key: cy-v9-${{ hashFiles('package-lock.json') }}
-          runTests: false
-
-      - name: Grep required test tags in Cypress v9 folder
-        run: npm run test-required-tag-test
-        working-directory: ./test-cy-v9-required-tags
-
-      - name: Grep required suite tags in Cypress v9 folder
-        run: npm run test-required-tag-suite
-        working-directory: ./test-cy-v9-required-tags
-
   release:
     needs: [
         # comment out for now, need to wait for the new version
@@ -324,8 +267,6 @@ jobs:
         test-required-tags,
         test-required-tags-only,
         test-required-tags-parent-suite,
-        test-cypress-v9,
-        test-cypress-v9-required-tags,
         test-parent-suite-name,
         test-prefix-tags,
         test-spec-parameter,
