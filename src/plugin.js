@@ -12,8 +12,6 @@ const minimatch = require('minimatch')
 
 const MINIMATCH_OPTIONS = { dot: true, matchBase: true }
 
-const isCypressV9 = (config) => !('specPattern' in config)
-
 function getGrepSettings(config) {
   const { expose } = config
 
@@ -246,26 +244,9 @@ function cypressGrepPlugin(config) {
     }
 
     if (greppedSpecs.length) {
-      if (isCypressV9(config)) {
-        debug('setting selected %d specs (< v10)', greppedSpecs.length)
-        // @ts-ignore
-        const integrationFolder = config.integrationFolder
-        const relativeNames = greppedSpecs.map((filename) =>
-          path.relative(integrationFolder, filename),
-        )
-        const relativeSpecs = relativeNames.join(', ')
-        debug(
-          'specs in the integration folder %s %s',
-          integrationFolder,
-          relativeSpecs,
-        )
-        // @ts-ignore
-        config.testFiles = relativeNames
-      } else {
-        debug('setting selected %d specs (>= v10)', greppedSpecs.length)
-        // @ts-ignore
-        config.specPattern = greppedSpecs
-      }
+      debug('setting selected %d specs (>= v10)', greppedSpecs.length)
+      // @ts-ignore
+      config.specPattern = greppedSpecs
     } else {
       // hmm, we filtered out all specs, probably something is wrong
       console.warn('cy-grep: grep and/or grepTags has eliminated all specs')
