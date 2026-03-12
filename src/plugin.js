@@ -90,7 +90,12 @@ function cypressGrepPlugin(config) {
 
     debug('found %d spec file(s)', specFiles.length)
     debug('%o', specFiles)
-    const specPattern = config.expose.grepSpec || config.expose.grepSpecs
+    // grab spec parameter from "env" or "expose"
+    const specPattern =
+      config.env?.grepSpec ||
+      config.env?.grepSpecs ||
+      config.expose?.grepSpec ||
+      config.expose?.grepSpecs
     if (specPattern) {
       debug('custom spec pattern: %s', specPattern)
       // https://github.com/bahmutov/cy-grep/issues/33
