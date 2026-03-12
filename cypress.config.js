@@ -1,9 +1,9 @@
 const { defineConfig } = require('cypress')
 
 module.exports = defineConfig({
-  // testing a bug
-  // https://github.com/bahmutov/cy-grep/issues/203
-  experimentalStudio: true,
+  // switch away from Cypress.env to Cypress.expose
+  // https://github.com/bahmutov/cy-grep/issues/223
+  allowCypressEnv: false,
   e2e: {
     defaultCommandTimeout: 1000,
     setupNodeEvents(on, config) {

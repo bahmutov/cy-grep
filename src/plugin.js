@@ -15,20 +15,20 @@ const MINIMATCH_OPTIONS = { dot: true, matchBase: true }
 const isCypressV9 = (config) => !('specPattern' in config)
 
 function getGrepSettings(config) {
-  const { env } = config
+  const { expose } = config
 
   debug('cy-grep plugin version %s', version)
-  debug('Cypress config env object: %o', env)
+  debug('Cypress config env object: %o', expose)
 
-  const grep = env.grep ? String(env.grep) : undefined
+  const grep = expose.grep ? String(expose.grep) : undefined
 
   if (grep) {
     console.log('cy-grep: tests with "%s" in their names', grep.trim())
   }
 
-  const grepPrefixAt = env.grepPrefixAt || env['grep-prefix-at']
+  const grepPrefixAt = expose.grepPrefixAt || expose['grep-prefix-at']
 
-  const grepTags = env.grepTags || env['grep-tags']
+  const grepTags = expose.grepTags || expose['grep-tags']
 
   if (grepTags) {
     console.log('cy-grep: filtering using tag(s) "%s"', grepTags)
@@ -37,25 +37,25 @@ function getGrepSettings(config) {
     debug('parsed grep tags %o', parsedGrep.tags)
   }
 
-  const grepBurn = env.grepBurn || env['grep-burn'] || env.burn
+  const grepBurn = expose.grepBurn || expose['grep-burn'] || expose.burn
 
   if (grepBurn) {
     console.log('cy-grep: running filtered tests %d times', grepBurn)
   }
 
-  const grepUntagged = env.grepUntagged || env['grep-untagged']
+  const grepUntagged = expose.grepUntagged || expose['grep-untagged']
 
   if (grepUntagged) {
     console.log('cy-grep: running untagged tests')
   }
 
-  const omitFiltered = env.grepOmitFiltered || env['grep-omit-filtered']
+  const omitFiltered = expose.grepOmitFiltered || expose['grep-omit-filtered']
 
   if (omitFiltered) {
     console.log('cy-grep: will omit filtered tests')
   }
 
-  const grepFilterSpecs = env.grepFilterSpecs === true
+  const grepFilterSpecs = expose.grepFilterSpecs === true
 
   if (grepPrefixAt) {
     console.log('cy-grep: all tags will be forced to start with @')
@@ -80,7 +80,7 @@ function cypressGrepPlugin(config) {
     )
   }
 
-  if (!config || !config.env) {
+  if (!config || !config.expose) {
     return config
   }
 
@@ -92,7 +92,7 @@ function cypressGrepPlugin(config) {
 
     debug('found %d spec file(s)', specFiles.length)
     debug('%o', specFiles)
-    const specPattern = config.env.grepSpec || config.env.grepSpecs
+    const specPattern = config.expose.grepSpec || config.expose.grepSpecs
     if (specPattern) {
       debug('custom spec pattern: %s', specPattern)
       // https://github.com/bahmutov/cy-grep/issues/33
@@ -164,7 +164,7 @@ function cypressGrepPlugin(config) {
             tags.requiredTags.forEach((tag) => {
               foundTags.add(tag)
             })
-          });
+          })
 
           return Object.keys(testTags).some((testTitle) => {
             const effectiveTags = testTags[testTitle].effectiveTags
@@ -228,7 +228,7 @@ function cypressGrepPlugin(config) {
       })
     }
 
-    const extraSpecsPattern = config.env.grepExtraSpecs
+    const extraSpecsPattern = config.expose.grepExtraSpecs
     if (extraSpecsPattern) {
       debug('processing the extra specs pattern "%s"', extraSpecsPattern)
       const extraSpecs = resolveFilePatterns(extraSpecsPattern)
@@ -242,7 +242,7 @@ function cypressGrepPlugin(config) {
         }
       })
 
-      config.env.grepExtraSpecs = resolvedExtraSpecs
+      config.expose.grepExtraSpecs = resolvedExtraSpecs
     }
 
     if (greppedSpecs.length) {

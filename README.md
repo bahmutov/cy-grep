@@ -4,7 +4,7 @@
 
 ```shell
 # run only tests with "hello" in their names
-npx cypress run --env grep=hello
+npx cypress run --expose grep=hello
 
   ✓ hello world
   - works
@@ -147,7 +147,7 @@ registerCypressGrep()
 
 Installing the plugin via `setupNodeEvents()` is required to enable the [grepFilterSpecs](#pre-filter-specs-grepfilterspecs) feature.
 
-**Tip:** you probably want to set these `env` settings in your config file
+**Tip:** you probably want to set these `expose` settings in your config file
 
 ```js
 module.exports = defineConfig({
@@ -228,22 +228,22 @@ $ npx cypress run --env grepTags=@smoke,grepFilterSpecs=true
 $ npx cypress run --env grepUntagged=true
 ```
 
-You can use any way to modify the environment values `grep` and `grepTags`, except the run-time `Cypress.env('grep')` (because it is too late at run-time). You can set the `grep` value in the `cypress.json` file to run only tests with the substring `viewport` in their names
+You can use any way to modify the environment values `grep` and `grepTags`, except the run-time `Cypress.expose('grep')` (because it is too late at run-time). You can set the `grep` value in the `cypress.json` file to run only tests with the substring `viewport` in their names
 
 ```json
 {
-  "env": {
+  "expose": {
     "grep": "viewport"
   }
 }
 ```
 
-You can also set the `env.grep` object in the plugin file, but remember to return the changed config object:
+You can also set the `expose.grep` object in the plugin file, but remember to return the changed config object:
 
 ```js
 // cypress/plugin/index.js
 module.exports = (on, config) => {
-  config.env.grep = 'viewport'
+  config.expose.grep = 'viewport'
   return config
 }
 ```
@@ -254,9 +254,9 @@ You can also set the grep and grepTags from the DevTools console while running C
 
 ```shell
 # run all tests with "hello" in their title
-$ npx cypress run --env grep=hello
+$ npx cypress run --expose grep=hello
 # run all tests with "hello world" in their title
-$ npx cypress run --env grep="hello world"
+$ npx cypress run --expose grep="hello world"
 ```
 
 ### OR substring matching
@@ -265,7 +265,7 @@ You can pass multiple title substrings to match separating them with `;` charact
 
 ```shell
 # run all tests with "hello world" or "auth user" in their title
-$ npx cypress run --env grep="hello world; auth user"
+$ npx cypress run --expose grep="hello world; auth user"
 ```
 
 ### Test suites
@@ -420,13 +420,13 @@ $ npx cypress run --env grepUntagged=true
 
 ### Access the tags in the test
 
-You can check the current test's tags (including its parent suites) by checking the `Cypress.env('testTags')` list
+You can check the current test's tags (including its parent suites) by checking the `Cypress.expose('testTags')` list
 
 ```js
 describe('parent', { tags: ['@p1', '@p2'] }, () => {
   describe('child', { tags: '@c1' }, () => {
     it('has all effective test tags', { tags: '@t1' }, () => {
-      const tags = Cypress.env('testTags')
+      const tags = Cypress.expose('testTags')
       // includes tags from the parent suites and the test itself
       expect(tags, 'tags').to.deep.equal(['@p1', '@p2', '@c1', '@t1'])
     })
@@ -434,7 +434,7 @@ describe('parent', { tags: ['@p1', '@p2'] }, () => {
 })
 ```
 
-Additionally, you can check both tags and required tags for each test within the current spec by checking the `Cypress.env('specTags')` object
+Additionally, you can check both tags and required tags for each test within the current spec by checking the `Cypress.expose('specTags')` object
 
 See [spec.js](./cypress/e2e/spec.js) for practical test spec example.
 

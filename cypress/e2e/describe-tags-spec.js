@@ -16,7 +16,7 @@ describe('block with tag smoke', { tags: '@smoke' }, () => {
 
 describe('block without any tags', () => {
   // note the parent suite has no tags
-  // so this test should run when using --env grepTags=@smoke
+  // so this test should run when using --expose grepTags=@smoke
   it('test with tag smoke', { tags: '@smoke' }, () => {})
 })
 
