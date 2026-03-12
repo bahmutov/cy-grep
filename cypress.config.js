@@ -13,7 +13,7 @@ module.exports = defineConfig({
     },
     specPattern: 'cypress/**/spec.js',
   },
-  env: {
+  expose: {
     // set different values for testing
     // https://github.com/bahmutov/cy-grep/issues/138
     // grepFilterSpecs: true,
