@@ -34,7 +34,7 @@ jobs:
       - name: Run single tag 🧪
         uses: cypress-io/github-action@v6
         with:
-          command: npx cypress-expect run --env grepTags=@tag1 --expect-exactly expects/tag1.json
+          command: npx cypress-expect run --expose grepTags=@tag1 --expect-exactly expects/tag1.json
 
   test-prefix-tags:
     runs-on: ubuntu-24.04
@@ -46,7 +46,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           # the plugin should automatically prefix tags with "@" character
-          command: npx cypress-expect run --env grepTags=tag1,grepPrefixAt=true --expect-exactly expects/prefix-tag1.json
+          command: npx cypress-expect run --expose grepTags=tag1,grepPrefixAt=true --expect-exactly expects/prefix-tag1.json
 
   test-spec-parameter:
     runs-on: ubuntu-24.04
@@ -66,7 +66,7 @@ jobs:
             npx cypress-expect run \
               --config specPattern=cypress/e2e/spec-parameter/*.cy.js \
               --spec cypress/e2e/spec-parameter/a.cy.js \
-              --env grepTags=@b,grepFilterSpecs=true \
+              --expose grepTags=@b,grepFilterSpecs=true \
               --expect-exactly expects/spec-parameter.json
 
   test-extra-specs:
@@ -85,7 +85,7 @@ jobs:
           command: |
             npx cypress-expect run \
               --config specPattern=cypress/e2e/extra-specs/*.cy.js \
-              --env grepTags=@a,grepFilterSpecs=true \
+              --expose grepTags=@a,grepFilterSpecs=true \
               --expect-exactly expects/extra-specs.json
 
   test-extra-specs-comma-list:
@@ -104,7 +104,7 @@ jobs:
           command: |
             npx cypress-expect run \
               --config specPattern=cypress/e2e/extra-specs/*.cy.js \
-              --env grepTags=@a,grepFilterSpecs=true \
+              --expose grepTags=@a,grepFilterSpecs=true \
               --expect-exactly expects/extra-specs.json
 
   test-one-spec-filter:
@@ -117,7 +117,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           command: npx cypress-expect run \
-            --env grepTags=A,grepFilterSpecs=true,grepOmitFiltered=true \
+            --expose grepTags=A,grepFilterSpecs=true,grepOmitFiltered=true \
             --config specPattern=cypress/e2e/effective-tags/*.js \
             --expect-exactly expects/effective-tags/spec-a.json
 
@@ -143,7 +143,7 @@ jobs:
         with:
           # the "projects" word is in the parent suite title
           command: npx cypress-expect run \
-            --env grep=projects,grepFilterSpecs=true,grepOmitFiltered=true \
+            --expose grep=projects,grepFilterSpecs=true,grepOmitFiltered=true \
             --config specPattern=cypress/e2e/negative-grep-spec.js \
             --expect-exactly expects/negative-grep-projects.json
 
@@ -152,7 +152,7 @@ jobs:
         with:
           # should skip tests inside the suite "projects"
           command: npx cypress-expect run \
-            --env grep=-projects,grepFilterSpecs=true,grepOmitFiltered=true \
+            --expose grep=-projects,grepFilterSpecs=true,grepOmitFiltered=true \
             --config specPattern=cypress/e2e/negative-grep-spec.js \
             --expect-exactly expects/negative-grep-no-projects.json
 
@@ -167,7 +167,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           command: npx cypress-expect run \
-            --env grepTags=A+smoke,grepFilterSpecs=true,grepOmitFiltered=true \
+            --expose grepTags=A+smoke,grepFilterSpecs=true,grepOmitFiltered=true \
             --config specPattern=cypress/e2e/effective-tags/*.js \
             --expect-exactly expects/effective-tags/spec-a-smoke.json
 
@@ -192,7 +192,7 @@ jobs:
         run: |
           npx cypress-expect run \
             --project tests/required-tags \
-            --env grepTags=@special \
+            --expose grepTags=@special \
             --expect-exactly ./tests/required-tags/expect-with-required-tag.json
 
   test-tag-not-found:
@@ -211,7 +211,7 @@ jobs:
         run: |
           npx cypress-expect run \
             --project tests/required-tags \
-            --env grepTags=@wrong-tag,grepFilterSpecs=true \
+            --expose grepTags=@wrong-tag,grepFilterSpecs=true \
             --expect-exactly ./tests/required-tags/expect-all.json
 
   test-required-tags-only:
@@ -235,7 +235,7 @@ jobs:
         run: |
           npx cypress-expect run \
             --project tests/required-tags-only \
-            --env grepTags=@scrape \
+            --expose grepTags=@scrape \
             --expect-exactly ./tests/required-tags-only/expect-scrape.json
 
   test-required-tags-parent-suite:
@@ -253,7 +253,7 @@ jobs:
         run: |
           npx cypress-expect run \
             --project tests/required-tags-suite \
-            --env grepTags=@scrape \
+            --expose grepTags=@scrape \
             --expect-exactly ./tests/required-tags-suite/expect-scrape.json
   release:
     needs: [
