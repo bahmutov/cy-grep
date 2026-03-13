@@ -13,20 +13,26 @@ const minimatch = require('minimatch')
 const MINIMATCH_OPTIONS = { dot: true, matchBase: true }
 
 function getGrepSettings(config) {
-  const { expose } = config
+  const { env, expose } = config
 
   debug('cy-grep plugin version %s', version)
   debug('Cypress config env object: %o', expose)
 
-  const grep = expose.grep ? String(expose.grep) : undefined
+  const grepStringMaybe = env.grep || expose.grep
+  const grep = grepStringMaybe ? String(grepStringMaybe) : undefined
 
   if (grep) {
     console.log('cy-grep: tests with "%s" in their names', grep.trim())
   }
 
-  const grepPrefixAt = expose.grepPrefixAt || expose['grep-prefix-at']
+  const grepPrefixAt =
+    env.grepPrefixAt ||
+    env['grep-prefix-at'] ||
+    expose.grepPrefixAt ||
+    expose['grep-prefix-at']
 
-  const grepTags = expose.grepTags || expose['grep-tags']
+  const grepTags =
+    env.grepTags || env['grep-tags'] || expose.grepTags || expose['grep-tags']
 
   if (grepTags) {
     console.log('cy-grep: filtering using tag(s) "%s"', grepTags)
@@ -35,25 +41,40 @@ function getGrepSettings(config) {
     debug('parsed grep tags %o', parsedGrep.tags)
   }
 
-  const grepBurn = expose.grepBurn || expose['grep-burn'] || expose.burn
+  const grepBurn =
+    env.grepBurn ||
+    env['grep-burn'] ||
+    env.burn ||
+    expose.grepBurn ||
+    expose['grep-burn'] ||
+    expose.burn
 
   if (grepBurn) {
     console.log('cy-grep: running filtered tests %d times', grepBurn)
   }
 
-  const grepUntagged = expose.grepUntagged || expose['grep-untagged']
+  const grepUntagged =
+    env.grepUntagged ||
+    env['grep-untagged'] ||
+    expose.grepUntagged ||
+    expose['grep-untagged']
 
   if (grepUntagged) {
     console.log('cy-grep: running untagged tests')
   }
 
-  const omitFiltered = expose.grepOmitFiltered || expose['grep-omit-filtered']
+  const omitFiltered =
+    env.grepOmitFiltered ||
+    env['grep-omit-filtered'] ||
+    expose.grepOmitFiltered ||
+    expose['grep-omit-filtered']
 
   if (omitFiltered) {
     console.log('cy-grep: will omit filtered tests')
   }
 
-  const grepFilterSpecs = expose.grepFilterSpecs === true
+  const grepFilterSpecs =
+    env.grepFilterSpecs === true || expose.grepFilterSpecs === true
 
   if (grepPrefixAt) {
     console.log('cy-grep: all tags will be forced to start with @')
