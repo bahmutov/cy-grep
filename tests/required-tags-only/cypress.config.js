@@ -1,6 +1,7 @@
 const { defineConfig } = require('cypress')
 
 module.exports = defineConfig({
+  allowCypressEnv: false,
   env: { grepFilterSpecs: true, grepOmitFiltered: true },
   e2e: {
     defaultCommandTimeout: 1000,

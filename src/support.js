@@ -31,9 +31,9 @@ beforeEach(() => {
   const info = testTree[testTitle]
   if (info) {
     const allTags = info.effectiveTestTags.concat(info.requiredTestTags)
-    Cypress.env('testTags', allTags)
+    Cypress.expose('testTags', allTags)
   } else {
-    Cypress.env('testTags', null)
+    Cypress.expose('testTags', null)
   }
 })
 
@@ -158,7 +158,7 @@ function registerCyGrep() {
     // Store the tags by individual name of test
     // Expose the object within the Cypress environment variables
     modifiedTestTree[nameOfTest] = { effectiveTestTags, requiredTestTags }
-    Cypress.env('specTags', modifiedTestTree)
+    Cypress.expose('specTags', modifiedTestTree)
 
     const shouldRun = shouldTestRun(
       parsedGrep,

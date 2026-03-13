@@ -12,23 +12,27 @@ const minimatch = require('minimatch')
 
 const MINIMATCH_OPTIONS = { dot: true, matchBase: true }
 
-const isCypressV9 = (config) => !('specPattern' in config)
-
 function getGrepSettings(config) {
-  const { env } = config
+  const { env, expose } = config
 
   debug('cy-grep plugin version %s', version)
-  debug('Cypress config env object: %o', env)
+  debug('Cypress config env object: %o', expose)
 
-  const grep = env.grep ? String(env.grep) : undefined
+  const grepStringMaybe = env.grep || expose.grep
+  const grep = grepStringMaybe ? String(grepStringMaybe) : undefined
 
   if (grep) {
     console.log('cy-grep: tests with "%s" in their names', grep.trim())
   }
 
-  const grepPrefixAt = env.grepPrefixAt || env['grep-prefix-at']
+  const grepPrefixAt =
+    env.grepPrefixAt ||
+    env['grep-prefix-at'] ||
+    expose.grepPrefixAt ||
+    expose['grep-prefix-at']
 
-  const grepTags = env.grepTags || env['grep-tags']
+  const grepTags =
+    env.grepTags || env['grep-tags'] || expose.grepTags || expose['grep-tags']
 
   if (grepTags) {
     console.log('cy-grep: filtering using tag(s) "%s"', grepTags)
@@ -37,25 +41,40 @@ function getGrepSettings(config) {
     debug('parsed grep tags %o', parsedGrep.tags)
   }
 
-  const grepBurn = env.grepBurn || env['grep-burn'] || env.burn
+  const grepBurn =
+    env.grepBurn ||
+    env['grep-burn'] ||
+    env.burn ||
+    expose.grepBurn ||
+    expose['grep-burn'] ||
+    expose.burn
 
   if (grepBurn) {
     console.log('cy-grep: running filtered tests %d times', grepBurn)
   }
 
-  const grepUntagged = env.grepUntagged || env['grep-untagged']
+  const grepUntagged =
+    env.grepUntagged ||
+    env['grep-untagged'] ||
+    expose.grepUntagged ||
+    expose['grep-untagged']
 
   if (grepUntagged) {
     console.log('cy-grep: running untagged tests')
   }
 
-  const omitFiltered = env.grepOmitFiltered || env['grep-omit-filtered']
+  const omitFiltered =
+    env.grepOmitFiltered ||
+    env['grep-omit-filtered'] ||
+    expose.grepOmitFiltered ||
+    expose['grep-omit-filtered']
 
   if (omitFiltered) {
     console.log('cy-grep: will omit filtered tests')
   }
 
-  const grepFilterSpecs = env.grepFilterSpecs === true
+  const grepFilterSpecs =
+    env.grepFilterSpecs === true || expose.grepFilterSpecs === true
 
   if (grepPrefixAt) {
     console.log('cy-grep: all tags will be forced to start with @')
@@ -80,7 +99,7 @@ function cypressGrepPlugin(config) {
     )
   }
 
-  if (!config || !config.env) {
+  if (!config || !config.expose) {
     return config
   }
 
@@ -92,7 +111,12 @@ function cypressGrepPlugin(config) {
 
     debug('found %d spec file(s)', specFiles.length)
     debug('%o', specFiles)
-    const specPattern = config.env.grepSpec || config.env.grepSpecs
+    // grab spec parameter from "env" or "expose"
+    const specPattern =
+      config.env?.grepSpec ||
+      config.env?.grepSpecs ||
+      config.expose?.grepSpec ||
+      config.expose?.grepSpecs
     if (specPattern) {
       debug('custom spec pattern: %s', specPattern)
       // https://github.com/bahmutov/cy-grep/issues/33
@@ -164,7 +188,7 @@ function cypressGrepPlugin(config) {
             tags.requiredTags.forEach((tag) => {
               foundTags.add(tag)
             })
-          });
+          })
 
           return Object.keys(testTags).some((testTitle) => {
             const effectiveTags = testTags[testTitle].effectiveTags
@@ -228,7 +252,9 @@ function cypressGrepPlugin(config) {
       })
     }
 
-    const extraSpecsPattern = config.env.grepExtraSpecs
+    // grab the extra specs from either "env" or "expose" objects
+    const extraSpecsPattern =
+      config.env?.grepExtraSpecs || config.expose?.grepExtraSpecs
     if (extraSpecsPattern) {
       debug('processing the extra specs pattern "%s"', extraSpecsPattern)
       const extraSpecs = resolveFilePatterns(extraSpecsPattern)
@@ -242,30 +268,13 @@ function cypressGrepPlugin(config) {
         }
       })
 
-      config.env.grepExtraSpecs = resolvedExtraSpecs
+      config.expose.grepExtraSpecs = resolvedExtraSpecs
     }
 
     if (greppedSpecs.length) {
-      if (isCypressV9(config)) {
-        debug('setting selected %d specs (< v10)', greppedSpecs.length)
-        // @ts-ignore
-        const integrationFolder = config.integrationFolder
-        const relativeNames = greppedSpecs.map((filename) =>
-          path.relative(integrationFolder, filename),
-        )
-        const relativeSpecs = relativeNames.join(', ')
-        debug(
-          'specs in the integration folder %s %s',
-          integrationFolder,
-          relativeSpecs,
-        )
-        // @ts-ignore
-        config.testFiles = relativeNames
-      } else {
-        debug('setting selected %d specs (>= v10)', greppedSpecs.length)
-        // @ts-ignore
-        config.specPattern = greppedSpecs
-      }
+      debug('setting selected %d specs (>= v10)', greppedSpecs.length)
+      // @ts-ignore
+      config.specPattern = greppedSpecs
     } else {
       // hmm, we filtered out all specs, probably something is wrong
       console.warn('cy-grep: grep and/or grepTags has eliminated all specs')
