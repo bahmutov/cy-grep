@@ -276,15 +276,24 @@ jobs:
       ]
     runs-on: ubuntu-24.04
     if: github.ref == 'refs/heads/main'
+    permissions:
+      # allow the release step to comment on
+      # issues, pull requests, and write to the repo
+      contents: write
+      issues: write
+      pull-requests: write
+      # Required for OIDC to let NPM registry know
+      # that this workflow is trusted
+      id-token: write
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v6
 
-      - name: Use Node 20+
+      - name: Use Node 24+
         # https://github.com/actions/setup-node
         uses: actions/setup-node@v6
         with:
-          node-version: '22'
+          node-version: '24'
 
       - name: Install only the semantic release 📦
         run: npm install semantic-release
