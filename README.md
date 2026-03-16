@@ -771,7 +771,7 @@ Start Cypress with the environment variable `DEBUG=cy-grep`. You will see a few 
 ```
 $ DEBUG=cy-grep npx cypress run --expose grep=works,grepFilterSpecs=true
 cy-grep: tests with "works" in their names
-cy-grep: filtering specs using "works" in the title
+cy-grep: filtering specs using "works" in the test title
   cy-grep Cypress config env object: { grep: 'works', grepFilterSpecs: true }
   ...
   cy-grep found 1 spec files +5ms

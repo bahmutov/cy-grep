@@ -80,6 +80,17 @@ function getGrepSettings(config) {
     console.log('cy-grep: all tags will be forced to start with @')
   }
 
+  // expose the collected config values
+  // so that the browser support code can use them
+  config.expose = config.expose || {}
+  config.expose.grep = grep
+  config.expose.grepTags = grepTags
+  config.expose.grepBurn = grepBurn
+  config.expose.grepUntagged = grepUntagged
+  config.expose.grepOmitFiltered = omitFiltered
+  config.expose.grepFilterSpecs = grepFilterSpecs
+  config.expose.grepPrefixAt = grepPrefixAt
+
   return { grep, grepTags, grepFilterSpecs, grepPrefixAt }
 }
 
@@ -131,7 +142,7 @@ function cypressGrepPlugin(config) {
     let greppedSpecs = []
 
     if (grep) {
-      console.log('cy-grep: filtering specs using "%s" in the title', grep)
+      console.log('cy-grep: filtering specs using "%s" in the test title', grep)
       const parsedGrep = parseGrep(grep, undefined, grepPrefixAt)
 
       debug('parsed grep %o', parsedGrep)

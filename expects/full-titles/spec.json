@@ -1,0 +1,9 @@
+{
+  "cypress": {
+    "e2e": {
+      "full-titles": {
+        "spec.cy.js": {}
+      }
+    }
+  }
+}
