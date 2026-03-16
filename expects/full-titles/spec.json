@@ -2,7 +2,14 @@
   "cypress": {
     "e2e": {
       "full-titles": {
-        "spec.cy.js": {}
+        "spec.cy.js": {
+          "parent": {
+            "child": {
+              "works 1": "passing",
+              "works 4": "passing"
+            }
+          }
+        }
       }
     }
   }

@@ -273,7 +273,7 @@ jobs:
         env:
           # pass test titles via environment variables
           DEBUG: cy-grep
-          CYPRESS_grep: 'parent child works 1, parent child works 4'
+          CYPRESS_grep: 'parent child works 1; parent child works 4'
           CYPRESS_grepFilterSpecs: true
           CYPRESS_grepOmitFiltered: true
 
