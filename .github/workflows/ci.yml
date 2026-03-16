@@ -255,6 +255,28 @@ jobs:
             --project tests/required-tags-suite \
             --expose grepTags=@scrape \
             --expect-exactly ./tests/required-tags-suite/expect-scrape.json
+
+  # confirms the tests can be filtered by full test title
+  # which includes the parent suite titles
+  test-title-grep:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v6
+
+      - name: Grep by test title 🧪
+        uses: cypress-io/github-action@v7
+        with:
+          command: npx cypress-expect run \
+            --config specPattern=cypress/e2e/full-titles/spec.cy.js \
+            --expect-exactly expects/full-titles/spec.json
+        env:
+          # pass test titles via environment variables
+          DEBUG: cy-grep
+          CYPRESS_grep: 'parent child works 1; parent child works 4'
+          CYPRESS_grepFilterSpecs: true
+          CYPRESS_grepOmitFiltered: true
+
   release:
     needs: [
         # comment out for now, need to wait for the new version
@@ -273,6 +295,7 @@ jobs:
         test-has-access-to-its-test-tags,
         test-extra-specs,
         test-extra-specs-comma-list,
+        test-title-grep,
       ]
     runs-on: ubuntu-24.04
     if: github.ref == 'refs/heads/main'
