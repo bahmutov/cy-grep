@@ -4,13 +4,15 @@
   "description": "Filter Cypress tests using title or tags",
   "main": "src/support.js",
   "scripts": {
+    "dev": "cypress open --e2e -b electron",
     "cy:run": "cypress run --config specPattern='**/unit.js'",
     "cy:open": "cypress open --e2e -b electron --config specPattern='**/unit.js'",
     "cy:open:tags": "cypress open --e2e -b electron --config specPattern='cypress/e2e/test-tags/*.cy.js'",
     "badges": "npx -p dependency-version-badge update-badge cypress",
     "semantic-release": "semantic-release",
     "deps": "npm audit --report --omit dev",
-    "stop-only": "stop-only --folder cypress/e2e"
+    "stop-only": "stop-only --folder cypress/e2e",
+    "open:check-only": "cypress open --e2e -b electron --config specPattern='cypress/e2e/only/check-only.cy.js' --expose grepFilterSpecs=true,grepOmitFiltered=true,grepTags=@one"
   },
   "dependencies": {
     "cypress-plugin-config": "^2.0.0",
