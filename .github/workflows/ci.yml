@@ -291,7 +291,7 @@ jobs:
         with:
           command: npx cypress-expect run \
             --config specPattern=cypress/e2e/only/check-only.cy.js \
-            --expect-exactly expects/only/check-only.json
+            --expect-exactly expects/check-only.json
         env:
           # pass test titles via environment variables
           DEBUG: cy-grep
