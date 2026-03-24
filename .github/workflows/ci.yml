@@ -13,6 +13,8 @@ jobs:
         with:
           build: npm run stop-only
           config: 'specPattern=**/unit.js'
+        env:
+          DEBUG: stop-only
 
   dependencies:
     if: false
