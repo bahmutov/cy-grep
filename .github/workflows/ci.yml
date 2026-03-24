@@ -11,7 +11,9 @@ jobs:
         # https://github.com/cypress-io/github-action
         uses: cypress-io/github-action@v7
         with:
-          build: npm run stop-only
+          # TODO: enable checking for "it.only" except specific files
+          # https://github.com/bahmutov/stop-only/issues/200
+          # build: npm run stop-only
           config: 'specPattern=**/unit.js'
         env:
           DEBUG: stop-only
