@@ -110,6 +110,16 @@ function registerCyGrep() {
     return
   }
 
+  // global state :(
+  // when using "it.only" it calls via internal Mocha functions our "it"
+  // BUT without passing test tags or test config -
+  // thus our "it" function thinks there are no effective tags to use
+  // against the current grep, so it skips the "it.only" test.
+  // we want the opposite: any "it.only" test should run
+  // thus we set this global flag from our "it.only" before
+  // Cypress/Mocha calls our "it" and we know to run the test without checking the tags
+  let insideItOnly = false
+
   it = function itGrep(name, options, callback) {
     if (typeof options === 'function') {
       // the test has format it('...', cb)
@@ -120,6 +130,11 @@ function registerCyGrep() {
     if (!callback) {
       // the pending test by itself
       return _it(name, options)
+    }
+
+    if (insideItOnly) {
+      insideItOnly = false
+      return _it(name, callback)
     }
 
     let configTags = options && options.tags
@@ -196,6 +211,7 @@ function registerCyGrep() {
       // omit the filtered tests completely
       // in order to be compatible with Mocha, create fake method and test object
       return {
+        markOnly: () => {},
         parent: {
           appendOnlyTest: () => {},
         },
@@ -273,7 +289,20 @@ function registerCyGrep() {
 
   // keep the ".skip", ".only" methods the same as before
   it.skip = _it.skip
-  it.only = _it.only
+
+  const _itOnly = _it.only
+  it.only = function itGrep(name, options, callback) {
+    insideItOnly = true
+    if (typeof options === 'function') {
+      // the test has format it('...', cb)
+      callback = options
+      options = {}
+    }
+
+    debugger
+    return _itOnly(name, options, callback)
+  }
+
   // preserve "it.each" method if found
   if (typeof _it.each === 'function') {
     it.each = _it.each

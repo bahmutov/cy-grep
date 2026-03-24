@@ -1,0 +1,12 @@
+{
+  "cypress": {
+    "e2e": {
+      "only": {
+        "check-only.cy.js": {
+          "b": "passing",
+          "c": "passing"
+        }
+      }
+    }
+  }
+}

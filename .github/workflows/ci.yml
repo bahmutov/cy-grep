@@ -11,8 +11,12 @@ jobs:
         # https://github.com/cypress-io/github-action
         uses: cypress-io/github-action@v7
         with:
-          build: npm run stop-only
+          # TODO: enable checking for "it.only" except specific files
+          # https://github.com/bahmutov/stop-only/issues/200
+          # build: npm run stop-only
           config: 'specPattern=**/unit.js'
+        env:
+          DEBUG: stop-only
 
   dependencies:
     if: false
@@ -277,6 +281,28 @@ jobs:
           CYPRESS_grepFilterSpecs: true
           CYPRESS_grepOmitFiltered: true
 
+  test-exclusive-only:
+    # confirms that combining test filtering by tags
+    # with "it.only" works and does not cause exceptions
+    # https://github.com/bahmutov/cy-grep/issues/234
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v6
+
+      - name: Grep by tag 🧪
+        uses: cypress-io/github-action@v7
+        with:
+          command: npx cypress-expect run \
+            --config specPattern=cypress/e2e/only/check-only.cy.js \
+            --expect-exactly expects/check-only.json
+        env:
+          # pass test titles via environment variables
+          DEBUG: cy-grep
+          CYPRESS_grepTags: '@one'
+          CYPRESS_grepFilterSpecs: true
+          CYPRESS_grepOmitFiltered: true
+
   release:
     needs: [
         # comment out for now, need to wait for the new version
@@ -296,6 +322,7 @@ jobs:
         test-extra-specs,
         test-extra-specs-comma-list,
         test-title-grep,
+        test-exclusive-only,
       ]
     runs-on: ubuntu-24.04
     if: github.ref == 'refs/heads/main'
