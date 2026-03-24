@@ -17,9 +17,10 @@
   "dependencies": {
     "cypress-plugin-config": "^2.0.0",
     "debug": "^4.3.2",
-    "find-cypress-specs": "^1.35.1",
+    "find-cypress-specs": "^1.54.12",
     "find-test-names": "1.29.19",
-    "globby": "^11.1.0"
+    "globby": "^11.1.0",
+    "minimatch": "^10.2.4"
   },
   "devDependencies": {
     "cypress": "15.12.0",

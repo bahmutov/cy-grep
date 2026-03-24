@@ -4,11 +4,10 @@ const debug = require('debug')('cy-grep')
 const { getSpecs } = require('find-cypress-specs')
 const { getTestNames, findEffectiveTestTags } = require('find-test-names')
 const fs = require('fs')
-const path = require('path')
 const { version } = require('../package.json')
 const { parseGrep, shouldTestRun, getMentionedTags } = require('./utils')
 const { resolveFilePatterns } = require('./file-utils')
-const minimatch = require('minimatch')
+const { minimatch } = require('minimatch')
 
 const MINIMATCH_OPTIONS = { dot: true, matchBase: true }
 
