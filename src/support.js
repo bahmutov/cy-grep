@@ -299,7 +299,6 @@ function registerCyGrep() {
       options = {}
     }
 
-    debugger
     return _itOnly(name, options, callback)
   }
 
