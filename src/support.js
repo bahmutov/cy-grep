@@ -314,9 +314,31 @@ function registerCyGrep() {
   }
 }
 
+function findReporterContainer() {
+  // different versions of Cypress has different reporter structure
+  let reporter = window.top.document.querySelector('.reporter .container')
+
+  if (!reporter) {
+    // trying reporter iframe (Cypress 15.21.0)
+    const frame = window.top.document.querySelector('#reporter-frame')
+    if (frame) {
+      reporter = frame.contentDocument.querySelector('.reporter .statsAndControls')
+    }
+  }
+
+  return reporter
+}
+
 function restartTests() {
   setTimeout(() => {
-    window.top.document.querySelector('.reporter .restart').click()
+    const reporterContainer = findReporterContainer()
+    if (!reporterContainer) {
+      console.warn('Reporter container not found, cannot restart tests')
+      return
+    }
+
+    const restartButton = reporterContainer?.querySelector('.restart')
+    restartButton?.click()
   }, 0)
 }
 
@@ -335,8 +357,8 @@ if (!Cypress.grep) {
    *  // and run all tests
    *  Cypress.grep()
    */
-  Cypress.grep = function grep(grep, tags, burn) {
-    setPluginConfigValue('grep', grep)
+  Cypress.grep = function grep(grepText, tags, burn) {
+    setPluginConfigValue('grep', grepText)
     setPluginConfigValue('grepTags', tags)
     setPluginConfigValue('grepBurn', burn)
     // remove any aliased values
@@ -344,7 +366,7 @@ if (!Cypress.grep) {
     setPluginConfigValue('grep-burn', null)
     setPluginConfigValue('burn', null)
 
-    debug('set new grep to "%o" restarting tests', { grep, tags, burn })
+    debug('set new grep to "%o" restarting tests', { grep: grepText, tags, burn })
     restartTests()
   }
 }
